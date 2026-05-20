@@ -5,13 +5,14 @@ import {
   Bell,
   ChevronDown,
   LogOut,
-  Menu,
+  MessageSquare,
   Search,
   ShieldCheck,
   UserRound,
   X,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type HeaderProps = {
   isSidebarCollapsed: boolean;
@@ -34,6 +35,12 @@ export default function Header({
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    // Handle any client-side auth clearance here (e.g., localStorage)
+    router.push('/');
+  };
 
   return (
     <header className="sticky top-0 z-40 shrink-0 px-3 pt-3 sm:px-5 lg:px-6">
@@ -46,7 +53,7 @@ export default function Header({
         <div className="g2g-header-glass relative flex min-h-20 flex-wrap items-center gap-3 px-3 py-3 sm:px-4 lg:flex-nowrap">
           <div className="g2g-light-sweep" />
 
-          <div className="mx-auto hidden w-full min-w-[240px] max-w-2xl flex-1 md:block">
+          <div className="hidden w-full min-w-[240px] max-w-2xl flex-1 md:block">
             <div
               className={[
                 'relative rounded-2xl border bg-white/58 transition-all duration-300',
@@ -75,11 +82,10 @@ export default function Header({
           <div className="ml-auto flex min-w-0 items-center gap-2">
             <button
               type="button"
-              className="g2g-header-action hidden sm:inline-flex"
-              aria-label="Rights management"
+              className="g2g-icon-button"
+              aria-label="Open chatbot"
             >
-              <ShieldCheck className="h-4 w-4" />
-              <span className="hidden xl:inline">Rights</span>
+              <MessageSquare className="h-5 w-5" />
             </button>
 
             <div className="relative">
@@ -153,28 +159,31 @@ export default function Header({
                     {...menuAnimation}
                     className="g2g-popover right-0 w-[min(16rem,calc(100vw-2rem))]"
                   >
-                    <div className="border-b border-white/60 px-4 py-4">
-                      <p className="text-sm font-semibold text-[#111827]">John Doe</p>
-                      <p className="text-xs text-[#6B7280]">john@example.com</p>
-                    </div>
-                    <a href="/profile" className="g2g-popover-link">Profile</a>
-                    <a href="/settings" className="g2g-popover-link">Account settings</a>
-                    <button type="button" className="g2g-popover-link w-full text-left text-[#DC2626]">
+                    <a href="/profile" className="g2g-popover-link">
+                      <UserRound className="h-4 w-4" />Profile
+                    </a>
+                    <a
+                      href="/rights"
+                      className="g2g-popover-link"
+                    >
+                      <ShieldCheck className="h-4 w-4" />
+                      Rights Management
+                    </a>
+                    <a
+                      href="/settings"
+                      className="g2g-popover-link"
+                    >
+                      Account Settings
+                    </a>
+                    <button type="button" onClick={handleSignOut} className="g2g-popover-link w-full text-left text-[#DC2626]">
                       <LogOut className="h-4 w-4" />
-                      Sign out
+                      Sign Out
                     </button>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            <button
-              type="button"
-              className="g2g-signout-button hidden lg:inline-flex"
-            >
-              <LogOut className="h-4 w-4" />
-              <span>Sign Out</span>
-            </button>
           </div>
 
           <div className="block w-full md:hidden">
