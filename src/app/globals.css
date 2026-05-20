@@ -118,7 +118,7 @@
   .g2g-sidebar-surface {
     position: relative;
     border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 28px;
+    border-radius: 32px;
     background:
       radial-gradient(circle at 18% 12%, rgba(255, 106, 0, 0.22), transparent 28%),
       radial-gradient(circle at 90% 6%, rgba(89, 110, 255, 0.22), transparent 34%),
@@ -160,7 +160,7 @@
     position: absolute;
     inset: 1px;
     pointer-events: none;
-    border-radius: 27px;
+    border-radius: 31px;
     background-image:
       linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
@@ -181,6 +181,7 @@
       0 18px 42px rgba(255, 106, 0, 0.18),
       0 14px 38px rgba(31, 42, 109, 0.28),
       inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    color: #ffffff;
   }
 
   .g2g-sidebar-active::after {
@@ -203,18 +204,26 @@
     box-shadow: 0 0 22px rgba(255, 106, 0, 0.72);
   }
 
+  .g2g-sidebar-collapsed .g2g-active-beam {
+    display: none;
+  }
+
   .g2g-logo-mark {
     display: flex;
-    height: 2.75rem;
-    width: 2.75rem;
+    height: 3rem;
+    width: 3rem;
     align-items: center;
     justify-content: center;
-    border-radius: 1rem;
+    border-radius: 1.3rem;
     color: #ffffff;
     background: linear-gradient(135deg, #1f2a6d, #2e3a8c 52%, #ff6a00);
     box-shadow:
       0 16px 34px rgba(31, 42, 109, 0.25),
       0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  }
+
+  .g2g-sidebar-collapsed .g2g-logo-mark {
+    margin-left: 0.75rem;
   }
 
   .g2g-icon-button {
@@ -313,9 +322,8 @@
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.68);
     border-radius: 1.25rem;
-    background: rgba(255, 255, 255, 0.82);
+    background: #ffffff;
     box-shadow: 0 24px 60px rgba(31, 42, 109, 0.18);
-    backdrop-filter: blur(22px);
   }
 
   .g2g-popover-link {
