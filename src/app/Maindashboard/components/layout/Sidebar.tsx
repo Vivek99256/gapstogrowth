@@ -205,14 +205,10 @@ function SidebarContent({
     const isActive = isHrefActive(pathname, item.href) || itemHasActiveChild(pathname, item);
 
     const className = [
-      'group relative flex w-full items-center gap-2 overflow-hidden border text-left transition-all duration-300',
-      isCollapsed
-        ? 'h-10 justify-center rounded-2xl border-transparent bg-transparent p-0 text-[#B8C4F1] hover:text-white'
-        : 'min-h-[2.2rem] rounded-[1rem] px-2 py-1.5',
+      'group relative flex w-full items-center overflow-hidden border text-left transition-all duration-300',
+      isCollapsed ? 'gap-6 h-12 justify-center rounded-2xl border-transparent bg-transparent p-0 text-[#B8C4F1] hover:text-white' : 'gap-2 min-h-[2.2rem] rounded-[1rem] px-2 py-1.5',
       !isCollapsed && isActive ? 'g2g-sidebar-active border-white/30 text-white' : '',
-      !isCollapsed && !isActive
-        ? 'border-white/10 bg-white/[0.058] text-[#D9E0FF] hover:border-white/18 hover:bg-white/[0.095] hover:text-white'
-        : '',
+      !isCollapsed && !isActive ? 'border-white/10 bg-white/[0.058] text-[#D9E0FF] hover:border-white/18 hover:bg-white/[0.095] hover:text-white' : '',
       isCollapsed && isActive ? 'text-white' : '',
     ].join(' ');
 
@@ -222,12 +218,12 @@ function SidebarContent({
         <span
           className={[
             'relative z-10 flex shrink-0 items-center justify-center transition-all duration-300',
-            isCollapsed ? 'h-6 w-6 rounded-2xl' : 'h-8 w-8 rounded-[1.05rem] border',
+            isCollapsed ? 'h-10 w-10 rounded-2xl' : 'h-12 w-12 rounded-[1.05rem] border',
             !isCollapsed && isActive ? 'border-white/30 bg-white/18 text-white shadow-[0_0_26px_rgba(255,106,0,0.34)]' : '',
             !isCollapsed && !isActive ? 'border-white/12 bg-white/8 text-[#B9C4FF] group-hover:text-white' : '',
           ].join(' ')}
         >
-          <Icon className={isCollapsed ? 'h-4 w-4' : 'h-3.5 w-3.5'} />
+          <Icon className={isCollapsed ? 'h-5 w-5' : 'h-5 w-5'} />
           {isCollapsed && (
             <span className="pointer-events-none absolute left-full top-1/2 ml-3 -translate-y-1/2 rounded-lg bg-[#18245D] px-2.5 py-1.5 text-xs font-semibold text-white opacity-0 shadow-xl transition-opacity group-hover:opacity-100">
               {item.label}
@@ -315,8 +311,9 @@ function SidebarContent({
     >
       <div
         className={[
-          'relative z-10 flex shrink-0 items-center transition-all duration-300',
-          isCollapsed ? 'h-14 justify-center px-0' : 'h-20 px-2',
+        'relative z-10 flex shrink-0 items-center transition-all duration-300',
+        isCollapsed ? 'h-16 justify-center px-0' : 'h-20 px-2',
+
         ].join(' ')}
       >
         <AnimatePresence initial={false}>
@@ -347,7 +344,7 @@ function SidebarContent({
           className={[
             'flex shrink-0 items-center justify-center rounded-[1.2rem] text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF6A00]/50',
             isCollapsed
-              ? 'h-8 w-8 border-0 bg-transparent hover:bg-white/8'
+              ? 'mt-3 h-8 w-8 border-0 bg-transparent hover:bg-white/8'
               : 'ml-auto h-10 w-10 border border-white/12 bg-white/8 hover:bg-white/14',
           ].join(' ')}
           aria-label={isMobile ? 'Close navigation menu' : isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -364,7 +361,7 @@ function SidebarContent({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="mb-4 flex justify-center"
+              className="mt-4 mb-4 flex justify-center"
             >
               {collapsedMetrics.map((metric) => {
                 const Icon = metric.icon;
@@ -517,7 +514,7 @@ export default function Sidebar({
     <>
       <motion.aside
         layout
-        animate={{ width: isCollapsed ? 78 : 300 }}
+        animate={{ width: isCollapsed ? 88 : 300 }}
         transition={sidebarTransition}
         className="sticky top-0 z-30 hidden h-[100dvh] max-h-[100dvh] shrink-0 p-1 lg:block xl:p-2"
       >
