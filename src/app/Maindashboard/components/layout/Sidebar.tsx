@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
 import {
   Building2,
   ChevronRight,
