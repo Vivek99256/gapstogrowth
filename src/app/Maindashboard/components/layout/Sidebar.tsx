@@ -18,7 +18,7 @@ import {
   UsersRound,
   X,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 
 type SidebarProps = {
   isCollapsed: boolean;
@@ -401,8 +401,46 @@ export default function Sidebar({
   onCloseMobile,
   onToggleCollapse,
 }: SidebarProps) {
+
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [sessionData, setSessionData] = useState({
+    url: "",
+    token: "",
+    orgType: "",
+    subInstituteId: "",
+    userId: "",
+    userProfile: "",
+    userimage: "",
+  });
+
+  useEffect(() => {
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      const {
+        APP_URL,
+        token,
+        org_type,
+        sub_institute_id,
+        user_id,
+        user_profile_name,
+        user_image,
+      } = JSON.parse(userData);
+
+      setSessionData({
+        url: APP_URL,
+        token,
+        orgType: org_type,
+        subInstituteId: sub_institute_id,
+        userId: user_id,
+        userProfile: user_profile_name,
+        userimage: user_image,
+      });
+    }
+    setTimeout(() => setIsLoading(false), 300);
+  }, []);
+
+  const hasFetched = useRef(false);
 
   useEffect(() => {
     function formatAndSetData(data: any) {
@@ -439,18 +477,29 @@ export default function Sidebar({
     }
 
     async function fetchMenu() {
-      try {
-        const cached = localStorage.getItem('g2g_sidebar_menu_cache');
-        if (cached) {
-          formatAndSetData(JSON.parse(cached));
-          setIsLoading(false);
-        }
-      } catch (e) {
-        console.error('Failed to parse sidebar cache', e);
+      if (!sessionData) return;
+      if (hasFetched.current) return;
+      if (
+        !sessionData.url ||
+        !sessionData.token ||
+        !sessionData.subInstituteId ||
+        !sessionData.userProfile
+      ) {
+        return;
       }
+      hasFetched.current = true;
+      // try {
+      //   const cached = localStorage.getItem('g2g_sidebar_menu_cache');
+      //   if (cached) {
+      //     formatAndSetData(JSON.parse(cached));
+      //     setIsLoading(false);
+      //   }
+      // } catch (e) {
+      //   console.error('Failed to parse sidebar cache', e);
+      // }
 
       try {
-        const res = await fetch('https://hp.triz.co.in/user/ajax_groupwiserights?type=API&token=4653|C3UjFLdCMhU9yHQHIgCjdVz0onDxz7vu3984QgJwd9583f68&sub_institute_id=3&profile_id=7');
+        const res = await fetch(`${sessionData.url}/user/ajax_groupwiserights?type=API&token=${sessionData.token}&sub_institute_id=${sessionData.subInstituteId}&profile_id=${sessionData.userProfile}`);
         const data = await res.json();
         localStorage.setItem('g2g_sidebar_menu_cache', JSON.stringify(data));
         formatAndSetData(data);
@@ -462,7 +511,7 @@ export default function Sidebar({
     }
 
     fetchMenu();
-  }, []);
+  }, [sessionData]);
 
   return (
     <>
