@@ -3,9 +3,8 @@
 import { useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import DashboardContent from '../dashboard/DashboardContent';
 
-export default function DashboardShell() {
+export default function DashboardShell({ children }: { children?: React.ReactNode }) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
@@ -33,7 +32,7 @@ export default function DashboardShell() {
           />
 
           <main className="min-h-0 flex-1 overflow-y-auto px-4 pb-8 pt-5 sm:px-6 lg:px-8 g2g-page-scroll">
-            <DashboardContent />
+            {children}
           </main>
         </div>
       </div>

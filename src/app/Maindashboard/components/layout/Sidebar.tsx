@@ -420,7 +420,7 @@ export default function Sidebar({
         org_type,
         sub_institute_id,
         user_id,
-        user_profile_name,
+        user_profile_id,
         user_image,
       } = JSON.parse(userData);
 
@@ -430,7 +430,7 @@ export default function Sidebar({
         orgType: org_type,
         subInstituteId: sub_institute_id,
         userId: user_id,
-        userProfile: user_profile_name,
+        userProfile: user_profile_id,
         userimage: user_image,
       });
     }
@@ -441,25 +441,51 @@ export default function Sidebar({
 
   useEffect(() => {
     function formatAndSetData(data: any) {
-      const formatted: MenuItem[] = (data.level_1 || []).map((l1: any) => {
+      console.log('[Sidebar] Raw API data:', data);
+      const hasCanView = (item: any) =>
+        Object.prototype.hasOwnProperty.call(item, 'can_view') && Number(item.can_view) === 1;
+
+      const buildTree = (items: any[]): any[] =>
+        items.filter((item) => {
+          const pass = hasCanView(item);
+          if (!pass) console.log('[Sidebar] Hiding item (can_view=0):', item?.menu_name);
+          return pass;
+        }).map((item) => {
+          const children = item.children
+            ? buildTree(item.children)
+            : [];
+          return { ...item, children };
+        });
+
+      const l1Items = (data.level_1 || []);
+      console.log('[Sidebar] Level-1 items count:', l1Items.length);
+      console.log('[Sidebar] Level-1 can_view breakdown:', l1Items.map((l1: any) => ({ id: l1.id, name: l1.menu_name, can_view: l1.can_view })));
+
+      const l2Filtered = buildTree(l1Items);
+      console.log('[Sidebar] After can_view filter, level-1 items:', l2Filtered.map((l: any) => l.menu_name));
+      const formatted: MenuItem[] = l2Filtered.map((l1: any) => {
         const icon = l1.icon && MdiToLucideMap[l1.icon] ? MdiToLucideMap[l1.icon] : l1.menu_name === 'Dashboard' ? Gauge : LayoutGrid;
         const l2List = data.level_2?.[l1.id] ? Object.values(data.level_2[l1.id]) : [];
         const children: MenuItem[] | undefined = l2List.length
-          ? l2List.map((l2: any) => {
-            const l3List = data.level_3?.[l2.id] ? Object.values(data.level_3[l2.id]) : [];
-            const grandchildren: MenuItem[] | undefined = l3List.length
-              ? l3List.map((l3: any) => ({
-                label: l3.menu_name,
-                href: menuHref(l3.access_link),
-              }))
-              : undefined;
+          ? l2List
+              .filter((l2: any) => hasCanView(l2))
+              .map((l2: any) => {
+                const l3List = data.level_3?.[l2.id] ? Object.values(data.level_3[l2.id]) : [];
+                const grandchildren: MenuItem[] | undefined = l3List.length
+                  ? l3List
+                      .filter((l3: any) => hasCanView(l3))
+                      .map((l3: any) => ({
+                        label: l3.menu_name,
+                        href: menuHref(l3.access_link),
+                      }))
+                  : undefined;
 
-            return {
-              label: l2.menu_name,
-              href: menuHref(l2.access_link),
-              children: grandchildren,
-            };
-          })
+                return {
+                  label: l2.menu_name,
+                  href: menuHref(l2.access_link),
+                  children: grandchildren,
+                };
+              })
           : undefined;
 
         return {
@@ -470,6 +496,7 @@ export default function Sidebar({
         };
       });
 
+      console.log('[Sidebar] Final menu items:', formatted.map((m) => m.label));
       setMenuItems(formatted);
     }
 

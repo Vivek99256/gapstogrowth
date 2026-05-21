@@ -86,6 +86,11 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
+  .rights-fixed-theme,
+  .rights-fixed-theme * {
+    color-scheme: light;
+  }
+
   .dark body {
     background-color: #111827;
     color: #ffffff;
