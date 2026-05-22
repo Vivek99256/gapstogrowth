@@ -472,8 +472,7 @@ function PermissionRow({
                 label={`${PERMISSION_META[key].label} permission for ${node.name}`}
                 level={node.level}
                 onChange={() => onTogglePermission(node.id, key)}
-              />
-1              
+              />              
             </div>
           </td>
         ))}
