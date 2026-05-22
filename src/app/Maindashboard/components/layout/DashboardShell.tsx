@@ -1,5 +1,6 @@
 'use client';
 
+import GapsToGrowthLoader from '@/components/GapsToGrowthLoader';
 import { useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -7,20 +8,28 @@ import Sidebar from './Sidebar';
 export default function DashboardShell({ children }: { children?: React.ReactNode }) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isNavigationLoading, setIsNavigationLoading] = useState(true);
 
   return (
     <div className="relative h-[100dvh] max-h-[100dvh] overflow-hidden bg-[#F4F7FB] text-[#111827]">
+      {isNavigationLoading && (
+        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#F4F7FB]">
+          <GapsToGrowthLoader fullScreen label="Loading..." />
+        </div>
+      )}
+
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#2E3A8C]/15 blur-3xl" />
         <div className="absolute right-10 top-28 h-80 w-80 rounded-full bg-[#FF6A00]/10 blur-3xl" />
         <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-[#16A34A]/10 blur-3xl" />
       </div>
 
-      <div className="relative z-10 flex h-full min-h-0">
+      <div className={['relative z-10 flex h-full min-h-0', isNavigationLoading ? 'invisible' : ''].join(' ')}>
         <Sidebar
           isCollapsed={isSidebarCollapsed}
           isMobileOpen={isMobileSidebarOpen}
           onCloseMobile={() => setIsMobileSidebarOpen(false)}
+          onLoadingChange={setIsNavigationLoading}
           onToggleCollapse={() => setIsSidebarCollapsed((value) => !value)}
         />
 

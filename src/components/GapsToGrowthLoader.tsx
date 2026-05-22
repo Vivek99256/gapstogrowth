@@ -83,14 +83,14 @@ export default function GapsToGrowthLoader({
           </div>
 
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative flex h-14 w-14 items-center justify-center sm:h-16 sm:w-16">
+            <div className="relative flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20">
               <Image
                 src="/assets/loading/gapstogrowth.png"
                 alt="GapsToGrowth"
                 width={500}
                 height={500}
                 preload
-                className="h-12 w-12 object-contain sm:h-14 sm:w-14"
+                className="h-14 w-14 object-contain sm:h-[4.5rem] sm:w-[4.5rem]"
               />
             </div>
           </div>
