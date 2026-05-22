@@ -513,6 +513,14 @@ export default function ProfileView() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[#F4F7FB]">
+        <GapsToGrowthLoader fullScreen label="Loading profile..." />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F4F7FB] text-[#111827]">
       <div className="mb-5">
@@ -522,32 +530,26 @@ export default function ProfileView() {
         </p>
       </div>
 
-      {loading ? (
-        <GapsToGrowthLoader label="Loading profile..." className="min-h-[400px]" />
-      ) : (
-        <>
-          <ProfileHeader employee={employeeData} />
+      <ProfileHeader employee={employeeData} />
 
-          <div className="mt-5 flex flex-col gap-5 lg:flex-row">
-            <SidebarNav activeSection={activeSection} onNavigate={handleNavigate} />
+      <div className="mt-5 flex flex-col gap-5 lg:flex-row">
+        <SidebarNav activeSection={activeSection} onNavigate={handleNavigate} />
 
-            <main className="grid min-w-0 flex-1 grid-cols-1 gap-5 xl:grid-cols-2">
-              <PersonalDetailsCard isActive={activeSection === 'personal'} details={personalDetails} />
-              <AddressDetailsCard isActive={activeSection === 'address'} addressDetails={addressDetails} />
-              <ReportingStructureCard 
-                isActive={activeSection === 'reporting'} 
-                supervisorOpt={reportingInfo.supervisorOpt}
-                employeeName={reportingInfo.employeeName}
-                reportingMethod={reportingInfo.reportingMethod}
-              />
-              <AttendanceCard isActive={activeSection === 'attendance'} schedule={attendanceSchedule} />
-              <div className="xl:col-span-2">
-                <BankDetailsCard isActive={activeSection === 'deposit'} bankDetails={bankDetails} />
-              </div>
-            </main>
+        <main className="grid min-w-0 flex-1 grid-cols-1 gap-5 xl:grid-cols-2">
+          <PersonalDetailsCard isActive={activeSection === 'personal'} details={personalDetails} />
+          <AddressDetailsCard isActive={activeSection === 'address'} addressDetails={addressDetails} />
+          <ReportingStructureCard
+            isActive={activeSection === 'reporting'}
+            supervisorOpt={reportingInfo.supervisorOpt}
+            employeeName={reportingInfo.employeeName}
+            reportingMethod={reportingInfo.reportingMethod}
+          />
+          <AttendanceCard isActive={activeSection === 'attendance'} schedule={attendanceSchedule} />
+          <div className="xl:col-span-2">
+            <BankDetailsCard isActive={activeSection === 'deposit'} bankDetails={bankDetails} />
           </div>
-        </>
-      )}
+        </main>
+      </div>
     </div>
   );
 }

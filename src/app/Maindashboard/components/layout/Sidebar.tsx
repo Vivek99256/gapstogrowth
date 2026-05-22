@@ -24,6 +24,7 @@ type SidebarProps = {
   isCollapsed: boolean;
   isMobileOpen: boolean;
   onCloseMobile: () => void;
+  onLoadingChange?: (isLoading: boolean) => void;
   onToggleCollapse: () => void;
 };
 
@@ -396,11 +397,13 @@ export default function Sidebar({
   isCollapsed,
   isMobileOpen,
   onCloseMobile,
+  onLoadingChange,
   onToggleCollapse,
 }: SidebarProps) {
 
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasSessionChecked, setHasSessionChecked] = useState(false);
   const [sessionData, setSessionData] = useState({
     url: "",
     token: "",
@@ -412,32 +415,44 @@ export default function Sidebar({
   });
 
   useEffect(() => {
-    const userData = localStorage.getItem("userData");
-    if (userData) {
-      const {
-        APP_URL,
-        token,
-        org_type,
-        sub_institute_id,
-        user_id,
-        user_profile_id,
-        user_image,
-      } = JSON.parse(userData);
+    try {
+      const userData = localStorage.getItem("userData");
+      if (userData) {
+        const {
+          APP_URL,
+          token,
+          org_type,
+          sub_institute_id,
+          user_id,
+          user_profile_id,
+          user_image,
+        } = JSON.parse(userData);
 
-      setSessionData({
-        url: APP_URL,
-        token,
-        orgType: org_type,
-        subInstituteId: sub_institute_id,
-        userId: user_id,
-        userProfile: user_profile_id,
-        userimage: user_image,
-      });
+        setSessionData({
+          url: APP_URL,
+          token,
+          orgType: org_type,
+          subInstituteId: sub_institute_id,
+          userId: user_id,
+          userProfile: user_profile_id,
+          userimage: user_image,
+        });
+      } else {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Failed to parse sidebar session:', error);
+      setIsLoading(false);
+    } finally {
+      setHasSessionChecked(true);
     }
-    setTimeout(() => setIsLoading(false), 300);
   }, []);
 
   const hasFetched = useRef(false);
+
+  useEffect(() => {
+    onLoadingChange?.(isLoading);
+  }, [isLoading, onLoadingChange]);
 
   useEffect(() => {
     function formatAndSetData(data: any) {
@@ -501,7 +516,7 @@ export default function Sidebar({
     }
 
     async function fetchMenu() {
-      if (!sessionData) return;
+      if (!hasSessionChecked) return;
       if (hasFetched.current) return;
       if (
         !sessionData.url ||
@@ -509,9 +524,11 @@ export default function Sidebar({
         !sessionData.subInstituteId ||
         !sessionData.userProfile
       ) {
+        setIsLoading(false);
         return;
       }
       hasFetched.current = true;
+      setIsLoading(true);
       // try {
       //   const cached = localStorage.getItem('g2g_sidebar_menu_cache');
       //   if (cached) {
@@ -535,7 +552,7 @@ export default function Sidebar({
     }
 
     fetchMenu();
-  }, [sessionData]);
+  }, [hasSessionChecked, sessionData]);
 
   return (
     <>
