@@ -473,7 +473,7 @@ function PermissionRow({
                 level={node.level}
                 onChange={() => onTogglePermission(node.id, key)}
               />
-              
+1              
             </div>
           </td>
         ))}
