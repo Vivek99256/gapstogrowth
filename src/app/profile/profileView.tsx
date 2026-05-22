@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react';
 import {
   ArrowRight,
   Bell,
@@ -331,48 +331,51 @@ const BankDetailsCard: React.FC<{ isActive?: boolean; bankDetails?: DetailItem[]
 export default function ProfileView() {
   const [activeSection, setActiveSection] = useState('personal');
   const [apiData, setApiData] = useState<any>(null);
-  const [sessionData, setSessionData] = useState<any>(null);
+  const [sessionData, setSessionData] = useState<any>(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const parsedData = JSON.parse(userData);
+        const { APP_URL, token, sub_institute_id, user_id, org_type } = parsedData;
+        if (APP_URL && token && sub_institute_id && user_id && org_type) {
+          return {
+            url: APP_URL,
+            token,
+            subInstituteId: String(sub_institute_id),
+            userId: String(user_id),
+            orgType: String(org_type),
+          };
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing userData on init:', error);
+    }
+    return null;
+  });
   const [employeesList, setEmployeesList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const IMAGE_BASE_URL = 'https://s3-triz.fra1.cdn.digitaloceanspaces.com/public/hp_user/';
   const defaultImage = 'https://cdn.builder.io/api/v1/image/assets/TEMP/630b9c5d4cf92bb87c22892f9e41967c298051a0?placeholderIfAbsent=true&apiKey=f18a54c668db405eb048e2b0a7685d39';
 
-     useEffect(() => {
-    if (typeof window !== "undefined") {
-      const userData = localStorage.getItem("userData");
-      if (userData) {
-        try {
-          const parsedData = JSON.parse(userData);
-          const { APP_URL, token, sub_institute_id,user_id,org_type } = parsedData;
 
-          if (APP_URL && token && sub_institute_id && user_id && org_type) {
-            setSessionData({
-              url: APP_URL,
-              token,
-              subInstituteId: String(sub_institute_id),
-              userId: String(user_id),
-              orgType: String(org_type),
-            });
-          }
-        } catch (error) {
-          console.error("Error parsing userData:", error);
-        }
-      }
-    }
-  }, []);
-
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchProfile = async () => {
-        if (!sessionData) return;
+      if (!sessionData) {
+        setLoading(false);
+        return;
+      }
       try {
         const res = await fetch(`${sessionData?.url}/user/add_user/${sessionData?.userId}/edit?type=API&token=${sessionData?.token}&sub_institute_id=${sessionData?.subInstituteId}&org_type=${sessionData?.orgType}&syear=2025`);
         if (!res.ok) throw new Error('Failed to fetch profile');
         const json = await res.json();
         setApiData(json.data); // only the data object from response, as requested
-        setEmployeesList(json.employees);
+        setEmployeesList(json.employees || []);
       } catch (err) {
         console.error('Profile fetch error:', err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProfile();
@@ -518,26 +521,37 @@ export default function ProfileView() {
         </p>
       </div>
 
-      <ProfileHeader employee={employeeData} />
-
-      <div className="mt-5 flex flex-col gap-5 lg:flex-row">
-        <SidebarNav activeSection={activeSection} onNavigate={handleNavigate} />
-
-        <main className="grid min-w-0 flex-1 grid-cols-1 gap-5 xl:grid-cols-2">
-          <PersonalDetailsCard isActive={activeSection === 'personal'} details={personalDetails} />
-          <AddressDetailsCard isActive={activeSection === 'address'} addressDetails={addressDetails} />
-          <ReportingStructureCard 
-            isActive={activeSection === 'reporting'} 
-            supervisorOpt={reportingInfo.supervisorOpt}
-            employeeName={reportingInfo.employeeName}
-            reportingMethod={reportingInfo.reportingMethod}
-          />
-          <AttendanceCard isActive={activeSection === 'attendance'} schedule={attendanceSchedule} />
-          <div className="xl:col-span-2">
-            <BankDetailsCard isActive={activeSection === 'deposit'} bankDetails={bankDetails} />
+      {loading ? (
+        <div className="flex min-h-[400px] items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#ff6a00] border-t-transparent" />
+            <p className="text-sm font-bold text-[#111827]">Loading profile...</p>
           </div>
-        </main>
-      </div>
+        </div>
+      ) : (
+        <>
+          <ProfileHeader employee={employeeData} />
+
+          <div className="mt-5 flex flex-col gap-5 lg:flex-row">
+            <SidebarNav activeSection={activeSection} onNavigate={handleNavigate} />
+
+            <main className="grid min-w-0 flex-1 grid-cols-1 gap-5 xl:grid-cols-2">
+              <PersonalDetailsCard isActive={activeSection === 'personal'} details={personalDetails} />
+              <AddressDetailsCard isActive={activeSection === 'address'} addressDetails={addressDetails} />
+              <ReportingStructureCard 
+                isActive={activeSection === 'reporting'} 
+                supervisorOpt={reportingInfo.supervisorOpt}
+                employeeName={reportingInfo.employeeName}
+                reportingMethod={reportingInfo.reportingMethod}
+              />
+              <AttendanceCard isActive={activeSection === 'attendance'} schedule={attendanceSchedule} />
+              <div className="xl:col-span-2">
+                <BankDetailsCard isActive={activeSection === 'deposit'} bankDetails={bankDetails} />
+              </div>
+            </main>
+          </div>
+        </>
+      )}
     </div>
   );
 }
