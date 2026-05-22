@@ -1,5 +1,6 @@
 'use client';
 
+import GapsToGrowthLoader from '@/components/GapsToGrowthLoader';
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   AlertCircle,
@@ -662,10 +663,11 @@ function MobilePermissionTree({
 
 function LoadingState() {
   return (
-    <div className="rounded-2xl border border-[#e5e7eb] bg-white p-8 text-center shadow-sm">
-      <Loader2 className="mx-auto h-8 w-8 animate-spin text-[#ff6a00]" aria-hidden="true" />
-      <p className="mt-4 text-sm font-bold text-[#111827]">Loading permission hierarchy</p>
-      <p className="mt-1 text-xs text-[#6b7280]">Fetching role-wise rights from the server.</p>
+    <div className="rounded-2xl border border-[#e5e7eb] bg-white/80 p-8 text-center shadow-sm">
+      <GapsToGrowthLoader
+        label="Loading permission hierarchy..."
+        className="min-h-[280px]"
+      />
     </div>
   );
 }
