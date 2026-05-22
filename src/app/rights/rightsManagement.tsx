@@ -705,7 +705,26 @@ export default function RightsManagement() {
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [selectedProfileId, setSelectedProfileId] = useState<string>('');
-  const [sessionData, setSessionData] = useState<SessionData | null>(null);
+  const [sessionData, setSessionData] = useState<SessionData | null>(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const parsedData = JSON.parse(userData);
+        const { APP_URL, token, sub_institute_id } = parsedData;
+        if (APP_URL && token && sub_institute_id) {
+          return {
+            url: APP_URL,
+            token,
+            subInstituteId: String(sub_institute_id),
+          };
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing userData on init:', error);
+    }
+    return null;
+  });
   const [rolesLoading, setRolesLoading] = useState(false);
   const [savingPermissions, setSavingPermissions] = useState(false);
 
@@ -722,27 +741,7 @@ export default function RightsManagement() {
   }, []);
 
   
-   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const userData = localStorage.getItem("userData");
-      if (userData) {
-        try {
-          const parsedData = JSON.parse(userData);
-          const { APP_URL, token, sub_institute_id } = parsedData;
 
-          if (APP_URL && token && sub_institute_id) {
-            setSessionData({
-              url: APP_URL,
-              token,
-              subInstituteId: String(sub_institute_id),
-            });
-          }
-        } catch (error) {
-          console.error("Error parsing userData:", error);
-        }
-      }
-    }
-  }, []);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -953,6 +952,15 @@ export default function RightsManagement() {
 
   const isLoading = rolesLoading || (loadingRole === activeRole && !snapshot);
   const isRefreshing = loadingRole === activeRole && Boolean(snapshot);
+  const isInitialLoading = rolesLoading || (roles.length > 0 && activeRole && !snapshot);
+
+  if (isInitialLoading) {
+    return (
+      <FixedThemeBoundary>
+        <LoadingState />
+      </FixedThemeBoundary>
+    );
+  }
 
   return (
     <FixedThemeBoundary>
