@@ -1,14 +1,38 @@
 'use client';
 
 import GapsToGrowthLoader from '@/components/GapsToGrowthLoader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
 export default function DashboardShell({ children }: { children?: React.ReactNode }) {
+  const router = useRouter();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isNavigationLoading, setIsNavigationLoading] = useState(true);
+  const [hasValidSession, setHasValidSession] = useState(false);
+
+  // Guard: if session is cleared (cache/cookies cleared), force sign-out
+  useEffect(() => {
+    const hasSession = localStorage.getItem('userData');
+    if (!hasSession) {
+      router.replace('/');
+    } else {
+      setHasValidSession(true);
+    }
+  }, [router]);
+
+  // While we haven't confirmed a valid session, show the loader (prevents flash before redirect)
+  if (!hasValidSession) {
+    return (
+      <div className="relative h-[100dvh] max-h-[100dvh] overflow-hidden bg-[#F4F7FB] text-[#111827]">
+        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#F4F7FB]">
+          <GapsToGrowthLoader fullScreen label="Loading..." />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-[100dvh] max-h-[100dvh] overflow-hidden bg-[#F4F7FB] text-[#111827]">

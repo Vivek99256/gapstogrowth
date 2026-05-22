@@ -38,7 +38,9 @@ export default function Header({
   const router = useRouter();
 
   const handleSignOut = () => {
-    // Handle any client-side auth clearance here (e.g., localStorage)
+    localStorage.removeItem('userData');
+    localStorage.removeItem('loggedTime');
+    localStorage.removeItem('g2g_sidebar_menu_cache');
     router.push('/');
   };
 
