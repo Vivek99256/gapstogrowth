@@ -73,8 +73,12 @@ const ProfileHeader: React.FC<{ employee?: any }> = ({ employee = {} }) => (
     <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
         <div className="relative mx-auto sm:mx-0">
-          <div className="grid h-32 w-32 place-items-center rounded-full bg-gradient-to-br from-[#1F2A6D] via-[#2E3A8C] to-[#FF6A00] text-4xl font-bold text-white shadow-[0_18px_40px_rgba(31,42,109,0.28)] ring-[12px] ring-[#FFF3EA] sm:h-28 sm:w-28">
-            {employee.initials}
+          <div className="grid h-32 w-32 place-items-center rounded-full bg-gradient-to-br from-[#1F2A6D] via-[#2E3A8C] to-[#FF6A00] text-4xl font-bold text-white shadow-[0_18px_40px_rgba(31,42,109,0.28)] ring-[12px] ring-[#FFF3EA] sm:h-28 sm:w-28 overflow-hidden">
+            <img 
+              src={employee.userprofile} 
+              alt={employee.name || 'Profile'} 
+              className="h-full w-full object-cover" 
+            />
           </div>
           <button
             aria-label="Update profile photo"
@@ -330,6 +334,9 @@ export default function ProfileView() {
   const [sessionData, setSessionData] = useState<any>(null);
   const [employeesList, setEmployeesList] = useState<any[]>([]);
 
+  const IMAGE_BASE_URL = 'https://s3-triz.fra1.cdn.digitaloceanspaces.com/public/hp_user/';
+  const defaultImage = 'https://cdn.builder.io/api/v1/image/assets/TEMP/630b9c5d4cf92bb87c22892f9e41967c298051a0?placeholderIfAbsent=true&apiKey=f18a54c668db405eb048e2b0a7685d39';
+
      useEffect(() => {
     if (typeof window !== "undefined") {
       const userData = localStorage.getItem("userData");
@@ -373,16 +380,20 @@ export default function ProfileView() {
 
   const employeeData = useMemo(() => {
     if (!apiData) {
-      return { name: '', initials: '', status: '', role: '', department: '', email: '', phone: '', joined: '' };
+        return { name: '', userprofile: '', status: '', role: '', department: '', email: '', phone: '', joined: '' };
     }
     const fullName = apiData.full_name || [apiData.name_suffix, apiData.first_name, apiData.middle_name, apiData.last_name].filter(Boolean).join(' ').trim();
     const init = ((apiData.first_name || '').charAt(0) + (apiData.last_name || '').charAt(0)).toUpperCase() || 'JD';
     const joinStr = apiData.joined_date
       ? new Date(apiData.joined_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/,/, '')
       : (apiData.join_year || '');
+    const profileImage = apiData?.image 
+      ? `${IMAGE_BASE_URL}${apiData.image}` 
+      : defaultImage;
+
     return {
       name: fullName,
-      initials: init,
+      userprofile: profileImage,
       status: apiData.status == 1 || apiData.status === '1' ? 'Active' : 'Inactive',
       role: apiData.userJobrole || '',
       department: apiData.userDepartment || '',
