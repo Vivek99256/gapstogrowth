@@ -540,3 +540,67 @@
     box-shadow: 0 0 0 10px rgba(255, 106, 0, 0);
   }
 }
+
+.g2g-loader-wrap {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.58) 42%, rgba(255, 255, 255, 0) 72%);
+}
+
+.g2g-loader-stage {
+  isolation: isolate;
+}
+
+.g2g-loader-stage::before {
+  content: "";
+  position: absolute;
+  inset: 38%;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.g2g-loader-orbit {
+  animation: g2g-loader-rotate 4.8s linear infinite;
+  transform-origin: center;
+}
+
+.g2g-loader-ring {
+  inset: 4%;
+  border: clamp(0.55rem, 2vw, 0.72rem) solid var(--ring-color);
+  opacity: 0.78;
+  filter: blur(0.7px);
+  mix-blend-mode: multiply;
+  transform:
+    translate(var(--ring-x), var(--ring-y))
+    rotate(var(--ring-rotate))
+    scaleX(1.04)
+    scaleY(0.96);
+  transform-origin: center;
+  animation: g2g-loader-ring-flow 4.2s ease-in-out infinite;
+  animation-delay: calc(var(--ring-index) * -180ms);
+}
+
+@keyframes g2g-loader-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes g2g-loader-ring-flow {
+  0%,
+  100% {
+    opacity: 0.52;
+    filter: blur(1.4px);
+  }
+  50% {
+    opacity: 0.86;
+    filter: blur(0.3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g2g-loader-orbit,
+  .g2g-loader-ring {
+    animation-duration: 12s;
+  }
+}

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react';
+import GapsToGrowthLoader from '@/components/GapsToGrowthLoader';
 import {
   ArrowRight,
   Bell,
@@ -522,12 +523,7 @@ export default function ProfileView() {
       </div>
 
       {loading ? (
-        <div className="flex min-h-[400px] items-center justify-center">
-          <div className="flex flex-col items-center gap-3">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#ff6a00] border-t-transparent" />
-            <p className="text-sm font-bold text-[#111827]">Loading profile...</p>
-          </div>
-        </div>
+        <GapsToGrowthLoader label="Loading profile..." className="min-h-[400px]" />
       ) : (
         <>
           <ProfileHeader employee={employeeData} />
