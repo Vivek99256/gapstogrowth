@@ -457,10 +457,7 @@ function PermissionRow({
             <span className="min-w-0 flex-1">
               <span className={`block truncate text-xs font-bold lg:text-sm ${style.text}`}>{node.name}</span>
               <span className="mt-1 flex flex-wrap items-center gap-1">
-                <span className={`rounded-full border px-2 py-0.5 text-[11px] font-bold ${style.badge}`}>
-                  Level {node.level}
-                </span>
-                {node.pageType && <span className="text-[11px] font-medium text-[#6b7280]">{node.pageType}</span>}
+
               </span>
             </span>
            
@@ -476,9 +473,7 @@ function PermissionRow({
                 level={node.level}
                 onChange={() => onTogglePermission(node.id, key)}
               />
-              <span className={`text-[9px] font-black leading-tight lg:text-[10px] ${permission[key] ? 'text-[#047857]' : 'text-[#9ca3af]'}`}>
-                {permission[key] ? 'Yes / Enabled' : 'No / Disabled'}
-              </span>
+
             </div>
           </td>
         ))}
@@ -543,7 +538,7 @@ function PermissionTable({
                         <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                         <span className="break-words">{label}</span>
                       </span>
-                      <ToggleSwitch
+                      <ToggleSwitch 
                         checked={allEnabled}
                         disabled={updating || totalMenus === 0}
                         label={`${allEnabled ? 'Disable' : 'Enable'} ${label} for all modules`}
