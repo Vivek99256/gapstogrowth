@@ -556,23 +556,23 @@ export default function Sidebar({
 
   return (
     <>
-      <motion.aside
-        layout
-        animate={{ width: isCollapsed ? 88 : 300 }}
-        transition={sidebarTransition}
-        className="sticky top-0 z-30 hidden h-[100dvh] max-h-[100dvh] shrink-0 p-1 lg:block xl:p-2"
-      >
+   <motion.aside
+     layout
+     animate={{ width: isCollapsed ? 88 : 300 }}
+     transition={sidebarTransition}
+     className="sticky top-0 z-30 hidden h-[100dvh] max-h-[100dvh] shrink-0 p-1 xl:block xl:p-2"
+   >
         <SidebarContent isCollapsed={isCollapsed} onToggleCollapse={onToggleCollapse} menuItems={menuItems} isLoading={isLoading} />
       </motion.aside>
 
-      <AnimatePresence>
-        {isMobileOpen && (
-          <motion.div
-            className="fixed inset-0 z-50 h-[100dvh] overflow-hidden lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
+       <AnimatePresence>
+         {isMobileOpen && (
+           <motion.div
+             className="fixed inset-0 z-50 h-[100dvh] overflow-hidden xl:hidden"
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+           >
             <button type="button" className="absolute inset-0 bg-[#071033]/60 backdrop-blur-sm" onClick={onCloseMobile} aria-label="Close navigation overlay" />
             <motion.aside
               initial={{ x: -340 }}

@@ -5,6 +5,7 @@ import {
   Bell,
   ChevronDown,
   LogOut,
+  Menu,
   MessageSquare,
   Search,
   ShieldCheck,
@@ -28,8 +29,8 @@ const menuAnimation = {
 };
 
 export default function Header({
-  isSidebarCollapsed,
-  onToggleSidebar,
+  isSidebarCollapsed: _isSidebarCollapsed,
+  onToggleSidebar: _onToggleSidebar,
   onOpenMobileSidebar,
 }: HeaderProps) {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -52,10 +53,19 @@ export default function Header({
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         className="g2g-gradient-border group relative max-w-full overflow-visible rounded-[22px]"
       >
-        <div className="g2g-header-glass relative flex min-h-20 flex-wrap items-center gap-3 px-3 py-3 sm:px-4 lg:flex-nowrap">
+        <div className="g2g-header-glass relative flex min-h-16 flex-nowrap items-center gap-2 px-2 py-2 sm:min-h-20 sm:gap-3 sm:px-4 sm:py-3">
           <div className="g2g-light-sweep" />
 
-          <div className="hidden w-full min-w-[240px] max-w-2xl flex-1 md:block">
+          <button
+            type="button"
+            onClick={onOpenMobileSidebar}
+            className="g2g-icon-button shrink-0 xl:hidden"
+            aria-label="Open navigation menu"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+
+          <div className="min-w-0 flex-1">
             <div
               className={[
                 'relative rounded-2xl border bg-white/58 transition-all duration-300',
@@ -71,7 +81,7 @@ export default function Header({
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
                 placeholder="Search competency, users, tasks..."
-                className="h-12 w-full bg-transparent pl-11 pr-28 text-sm font-medium text-[#111827] outline-none placeholder:text-[#6B7280]"
+                className="h-11 w-full bg-transparent pl-10 pr-3 text-sm font-medium text-[#111827] outline-none placeholder:text-[#6B7280] sm:h-12 sm:pl-11 lg:pr-28"
                 aria-label="Global search"
               />
               <div className="absolute right-2 top-1/2 hidden -translate-y-1/2 items-center gap-1 rounded-xl border border-white/70 bg-white/65 px-2.5 py-1 text-[11px] font-semibold text-[#6B7280] shadow-sm lg:flex">
@@ -81,7 +91,7 @@ export default function Header({
             </div>
           </div>
 
-          <div className="ml-auto flex min-w-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               className="g2g-icon-button"
@@ -186,27 +196,6 @@ export default function Header({
               </AnimatePresence>
             </div>
 
-          </div>
-
-          <div className="block w-full md:hidden">
-            <div
-              className={[
-                'relative rounded-2xl border bg-white/60 transition-all duration-300',
-                isSearchFocused
-                  ? 'border-[#FF6A00]/45 ring-4 ring-[#FF6A00]/10'
-                  : 'border-white/60',
-              ].join(' ')}
-            >
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#2E3A8C]" />
-              <input
-                type="search"
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setIsSearchFocused(false)}
-                placeholder="Search competency, users, tasks..."
-                className="h-11 w-full bg-transparent pl-11 pr-4 text-sm font-medium text-[#111827] outline-none placeholder:text-[#6B7280]"
-                aria-label="Global search"
-              />
-            </div>
           </div>
         </div>
       </motion.div>
