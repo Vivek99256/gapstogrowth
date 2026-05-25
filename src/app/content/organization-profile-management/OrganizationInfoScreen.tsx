@@ -1,0 +1,83 @@
+'use client';
+
+import { ArrowRight } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { RequiredMark } from './_components/FormControls';
+
+import WorkflowStepper from './_components/WorkflowStepper';
+import ComplianceSetupTab from './_components/tabs/ComplianceSetupTab';
+import DepartmentManagementTab from './_components/tabs/DepartmentManagementTab';
+import DisciplinarySetupTab from './_components/tabs/DisciplinarySetupTab';
+import OrganizationInfoTab from './_components/tabs/OrganizationInfoTab';
+import type { StepId } from './_components/types';
+import { steps } from './_components/workflowData';
+
+const shellStyle = {
+  boxShadow: '0 24px 70px rgba(31, 42, 109, 0.11)',
+} as const;
+
+const cardStyle = {
+  boxShadow: '0 18px 48px rgba(31, 42, 109, 0.09)',
+} as const;
+
+export default function OrganizationInfoScreen() {
+  const [activeStep, setActiveStep] = useState<StepId>('organization');
+  const activeIndex = steps.findIndex((step) => step.id === activeStep);
+  const activeStepMeta = steps[activeIndex] || steps[0];
+  const nextStep = steps[activeIndex + 1];
+  const previousStep = steps[activeIndex - 1];
+
+  const activeContent = useMemo(() => {
+    if (activeStep === 'departments') return <DepartmentManagementTab />;
+    if (activeStep === 'compliance') return <ComplianceSetupTab />;
+    if (activeStep === 'disciplinary') return <DisciplinarySetupTab />;
+    return <OrganizationInfoTab />;
+  }, [activeStep]);
+
+  return (
+    <div className="mx-auto w-full max-w-[1440px] ">
+      <div className="mb-6">
+        <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-[#6B7280]">
+          <span>Organization Management</span>
+          <span className="text-[#B6BECD]">/</span>
+          <span className="text-[#1F2A6D]">Organization Details</span>
+        </div>
+        <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <h1 className="text-2xl font-black tracking-normal text-[#111827] sm:text-3xl">Add Organization Details</h1>
+            <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-[#6B7280] sm:text-base">
+              Enter the organization&apos;s basic information and administrative details.
+            </p>
+          </div>
+    
+        </div>
+      </div>
+
+      <section className="rounded-3xl border border-white/70 bg-white/[0.92] p-4 backdrop-blur-xl sm:p-5 lg:p-6" style={shellStyle}>
+        <WorkflowStepper activeStep={activeStep} onStepChange={setActiveStep} />
+
+        <div className="mt-6 ">
+          <div
+            className={[
+              'rounded-2xl border border-[#E4E9F6] bg-white p-5 sm:p-6',
+              activeStep === 'departments' ? 'xl:col-span-2' : '',
+            ].join(' ')}
+            style={cardStyle}
+          >
+            <div className="mb-6 flex flex-col gap-3 border-b border-[#EEF1F7] pb-5 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h2 className="mt-1 text-xl font-black text-[#111827]">{activeStepMeta.title}</h2>
+              </div>
+              <p className="text-sm font-semibold text-[#6B7280]">
+                <RequiredMark /> Required fields
+              </p>
+            </div>
+
+            {activeContent}
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}
