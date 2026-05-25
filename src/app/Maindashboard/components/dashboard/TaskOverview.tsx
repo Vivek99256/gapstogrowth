@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { CheckCircle, AlertTriangle, Clock, Plus } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Clock, Plus } from 'lucide-react';
+import { Button, Progress, SectionCard, StatusBadge } from '@/components/ui';
 
 const tasks = [
   {
@@ -40,76 +41,49 @@ const tasks = [
   },
 ];
 
+const taskStatusIcon = {
+  completed: { icon: CheckCircle, className: 'bg-[#EAF7EF] text-[#168044]' },
+  in_progress: { icon: AlertTriangle, className: 'bg-[#EEF2FF] text-[#2E3A8C]' },
+  pending: { icon: Clock, className: 'bg-[#FFF3EA] text-[#C45B00]' },
+};
+
 export default function TaskOverview() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark:bg-gray-800 dark:border-gray-700"
-    >
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Task Overview</h3>
-        <button className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-          View All Tasks
-        </button>
-      </div>
-      <div className="space-y-3">
-        {tasks.map((task) => (
-          <div key={task.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
-            <div className="flex-shrink-0">
-              {task.status === 'completed' && (
-                <div className="h-8 w-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4" />
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+      <SectionCard title="Task Overview" action={<Button variant="ghost" size="sm">View All Tasks</Button>}>
+        <div className="space-y-3">
+          {tasks.map((task) => {
+            const status = taskStatusIcon[task.status as keyof typeof taskStatusIcon];
+            const Icon = status.icon;
+
+            return (
+              <div key={task.id} className="flex items-start space-x-3 rounded-lg bg-[#F8FAFE] p-3">
+                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${status.className}`}>
+                  <Icon className="h-4 w-4" />
                 </div>
-              )}
-              {task.status === 'in_progress' && (
-                <div className="h-8 w-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
-                  <AlertTriangle className="h-4 w-4" />
+                <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex items-center justify-between gap-3">
+                    <h4 className="font-black text-[#111827]">{task.title}</h4>
+                    <StatusBadge status={task.priority} />
+                  </div>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-[#6B7280]">
+                    <span>Due: {task.dueDate}</span>
+                    <span>&bull;</span>
+                    <span>Assignee: {task.assignee}</span>
+                  </div>
+                  <Progress value={task.progress} className="mt-1 h-2.5" />
+                  <div className="mt-1 text-xs font-medium text-[#6B7280]">{task.progress}%</div>
                 </div>
-              )}
-              {task.status === 'pending' && (
-                <div className="h-8 w-8 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center">
-                  <Clock className="h-4 w-4" />
-                </div>
-              )}
-            </div>
-            <div className="flex-1 space-y-1">
-              <div className="flex items-center justify-between">
-                <h4 className="font-medium text-gray-900 dark:text-white">{task.title}</h4>
-                <span className={`px-2 py-0.5 text-xs rounded-full ${
-                  task.priority === 'high' ? 'bg-red-100 text-red-800' :
-                  task.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-green-100 text-green-800'
-                }`}>
-                  {task.priority}
-                </span>
               </div>
-              <div className="flex items-center space-x-3 text-sm text-gray-500 dark:text-gray-400">
-                <span>Due: {task.dueDate}</span>
-                <span>•</span>
-                <span>Assignee: {task.assignee}</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-                <div
-                  className={`bg-navy-600 h-2.5 rounded-full transition-all duration-500`}
-                  style={{ width: `${task.progress}%` }}
-                ></div>
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {task.progress}%
-              </div>
-            </div>
+            );
+          })}
+          <div className="border-t border-[#EEF1F7] pt-3">
+            <Button variant="secondary" className="w-full" leftIcon={<Plus className="h-4 w-4" />}>
+              Add New Task
+            </Button>
           </div>
-        ))}
-        <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
-          <button
-            className="flex w-full items-center justify-center px-4 py-2 text-sm font-medium text-navy-600 bg-navy-50 hover:bg-navy-100 rounded-md transition-colors dark:bg-gray-700 dark:text-navy-400 dark:hover:bg-gray-600"
-          >
-            <Plus className="mr-2 h-4 w-4" /> Add New Task
-          </button>
         </div>
-      </div>
+      </SectionCard>
     </motion.div>
   );
 }

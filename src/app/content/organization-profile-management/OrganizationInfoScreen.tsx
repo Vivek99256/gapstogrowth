@@ -2,6 +2,7 @@
 
 import { ArrowRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { PageHeader } from '@/components/ui';
 import { RequiredMark } from './_components/FormControls';
 
 import WorkflowStepper from './_components/WorkflowStepper';
@@ -36,22 +37,11 @@ export default function OrganizationInfoScreen() {
 
   return (
     <div className="mx-auto w-full max-w-[1440px] ">
-      <div className="mb-6">
-        <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-[#6B7280]">
-          <span>Organization Management</span>
-          <span className="text-[#B6BECD]">/</span>
-          <span className="text-[#1F2A6D]">Organization Details</span>
-        </div>
-        <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <h1 className="text-2xl font-black tracking-normal text-[#111827] sm:text-3xl">Add Organization Details</h1>
-            <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-[#6B7280] sm:text-base">
-              Enter the organization&apos;s basic information and administrative details.
-            </p>
-          </div>
-    
-        </div>
-      </div>
+      <PageHeader
+        breadcrumbs={['Organization Management', 'Organization Details']}
+        title="Add Organization Details"
+        description="Enter the organization's basic information and administrative details."
+      />
 
       <section className="rounded-3xl border border-white/70 bg-white/[0.92] p-4 backdrop-blur-xl sm:p-5 lg:p-6" style={shellStyle}>
         <WorkflowStepper activeStep={activeStep} onStepChange={setActiveStep} />

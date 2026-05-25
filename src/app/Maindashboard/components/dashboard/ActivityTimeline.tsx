@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Users, DollarSign, Check, AlertTriangle, Clock } from 'lucide-react';
+import { Avatar, AvatarImage, Button, SectionCard } from '@/components/ui';
 
 const activities = [
   {
@@ -60,23 +61,15 @@ export default function ActivityTimeline() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark:bg-gray-800 dark:border-gray-700"
     >
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Activity</h3>
-        <button className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-          View All
-        </button>
-      </div>
+      <SectionCard title="Recent Activity" action={<Button variant="ghost" size="sm">View All</Button>}>
       <div className="space-y-4">
         {activities.map((activity) => (
           <div key={activity.id} className="flex items-start space-x-3">
             {activity.avatar && (
-              <img
-                src={activity.avatar}
-                alt="Avatar"
-                className="h-8 w-8 rounded-full flex-shrink-0"
-              />
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={activity.avatar} alt="" />
+              </Avatar>
             )}
             {!activity.avatar && (
               <div className={`${activity.color} h-8 w-8 rounded-full flex-shrink-0 flex items-center justify-center`}>
@@ -93,6 +86,7 @@ export default function ActivityTimeline() {
           </div>
         ))}
       </div>
+      </SectionCard>
     </motion.div>
   );
 }

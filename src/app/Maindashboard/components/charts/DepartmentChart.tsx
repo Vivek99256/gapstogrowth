@@ -1,5 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { motion } from 'framer-motion';
+import { SectionCard } from '@/components/ui';
 
 const departmentData = [
   { name: 'Sales', value: 400, fill: '#4361ee' },
@@ -15,9 +16,8 @@ export default function DepartmentChart() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark:bg-gray-800 dark:border-gray-700"
     >
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Department Budget Allocation</h3>
+      <SectionCard title="Department Budget Allocation">
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={departmentData}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -30,6 +30,7 @@ export default function DepartmentChart() {
           ))}
         </BarChart>
       </ResponsiveContainer>
+      </SectionCard>
     </motion.div>
   );
 }
