@@ -5,10 +5,28 @@ import {
   MoreVertical,
   Pencil,
   Plus,
-  Search,
   Settings,
   UsersRound,
 } from 'lucide-react';
+import {
+  Badge,
+  Button,
+  DataList,
+  DataListItem,
+  IconButton,
+  Pagination,
+  PaginationButton,
+  SearchInput,
+  SectionCard,
+  Select,
+  StatusBadge,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui';
 import { FormActions } from '../FormControls';
 
 const departments = [
@@ -64,15 +82,7 @@ const teamMembers = [
 ];
 
 function SearchBox({ placeholder }: { placeholder: string }) {
-  return (
-    <label className="relative block">
-      <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#8A94A8]" />
-      <input
-        className="h-9 w-full rounded-md border border-[#DDE4F2] bg-white pl-9 pr-3 text-xs font-semibold text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A00] focus:ring-4 focus:ring-[#FF6A00]/10"
-        placeholder={placeholder}
-      />
-    </label>
-  );
+  return <SearchInput placeholder={placeholder} />;
 }
 
 function TreeNode({ node, depth = 0 }: { node: any; depth?: number }) {
@@ -97,7 +107,7 @@ function TreeNode({ node, depth = 0 }: { node: any; depth?: number }) {
 
 function DepartmentHierarchy() {
   return (
-    <aside className="rounded-lg border border-[#DDE4F2] bg-white p-4">
+    <SectionCard contentClassName="p-4">
       <h3 className="mb-3 text-sm font-black text-[#111827]">Department Hierarchy</h3>
       <SearchBox placeholder="Search departments" />
       <div className="mt-4 space-y-1">
@@ -105,83 +115,78 @@ function DepartmentHierarchy() {
           <TreeNode key={node.label} node={node} />
         ))}
       </div>
-      <button
-        type="button"
-        className="mt-5 inline-flex h-9 w-full items-center justify-center gap-2 rounded-md border border-[#C9D4EA] bg-white text-xs font-black text-[#1F2A6D] hover:bg-[#F8FAFE]"
-      >
-        <Plus className="h-3.5 w-3.5" />
+      <Button variant="outline" size="sm" className="mt-5 w-full" leftIcon={<Plus className="h-3.5 w-3.5" />}>
         Add Sub-Department
-      </button>
-    </aside>
+      </Button>
+    </SectionCard>
   );
 }
 
 function DepartmentTable() {
   return (
-    <section className="rounded-lg border border-[#DDE4F2] bg-white p-4">
+    <SectionCard contentClassName="p-4">
       <div className="mb-4 grid gap-3 md:grid-cols-[1fr_180px]">
         <SearchBox placeholder="Search departments" />
-        <select className="h-9 rounded-md border border-[#DDE4F2] bg-white px-3 text-xs font-bold text-[#1F2A6D] outline-none">
+        <Select className="h-9 font-bold text-[#1F2A6D]">
           <option>Department Status - All</option>
           <option>Active</option>
           <option>Draft</option>
-        </select>
+        </Select>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[760px] text-left text-xs">
-          <thead>
-            <tr className="border-b border-[#E6EBF5] text-[11px] font-black uppercase text-[#64748B]">
-              <th className="py-3">Department Name</th>
-              <th>Department Code</th>
-              <th>Parent Department</th>
-              <th>Department Head</th>
-              <th>Users</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table className="min-w-[760px]">
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>Department Name</TableHead>
+              <TableHead>Department Code</TableHead>
+              <TableHead>Parent Department</TableHead>
+              <TableHead>Department Head</TableHead>
+              <TableHead>Users</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {departments.map((department) => (
-              <tr
+              <TableRow
                 key={department.code}
                 className={[
-                  'border-b border-[#EEF2F7] font-semibold text-[#334155]',
-                  department.selected ? 'bg-[#EAF0FF] text-[#1F2A6D]' : 'hover:bg-[#F8FAFE]',
+                  department.selected ? 'bg-[#EAF0FF] hover:bg-[#EAF0FF]' : '',
                 ].join(' ')}
               >
-                <td className="py-3 font-black">{department.name}</td>
-                <td>{department.code}</td>
-                <td>{department.parent}</td>
-                <td>{department.head}</td>
-                <td>{department.users}</td>
-                <td>
-                  <span className="rounded bg-[#EAF7EF] px-2 py-1 text-[11px] font-black text-[#168044]">{department.status}</span>
-                </td>
-                <td>
-                  <button type="button" className="grid h-7 w-7 place-items-center rounded-md hover:bg-white">
+                <TableCell className="font-black text-[#1F2A6D]">{department.name}</TableCell>
+                <TableCell>{department.code}</TableCell>
+                <TableCell>{department.parent}</TableCell>
+                <TableCell>{department.head}</TableCell>
+                <TableCell>{department.users}</TableCell>
+                <TableCell>
+                  <StatusBadge status={department.status} />
+                </TableCell>
+                <TableCell>
+                  <IconButton variant="ghost" size="sm">
                     <MoreVertical className="h-4 w-4" />
-                  </button>
-                </td>
-              </tr>
+                  </IconButton>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
       <div className="mt-4 flex items-center justify-between text-xs font-semibold text-[#64748B]">
         <span>Showing 1 to 11 of 11 departments</span>
-        <div className="flex items-center gap-1">
-          <button type="button" className="h-7 w-7 rounded border border-[#DDE4F2]">‹</button>
-          <button type="button" className="h-7 w-7 rounded bg-[#1F2A6D] text-white">1</button>
-          <button type="button" className="h-7 w-7 rounded border border-[#DDE4F2]">›</button>
-        </div>
+        <Pagination>
+          <PaginationButton aria-label="Previous page">‹</PaginationButton>
+          <PaginationButton active>1</PaginationButton>
+          <PaginationButton aria-label="Next page">›</PaginationButton>
+        </Pagination>
       </div>
-    </section>
+    </SectionCard>
   );
 }
 
 function DetailPanel() {
   return (
-    <aside className="rounded-lg border border-[#DDE4F2] bg-white p-4">
+    <SectionCard contentClassName="p-4">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <span className="grid h-11 w-11 place-items-center rounded-lg bg-[#EEF2FF] text-[#2E3A8C]">
@@ -190,20 +195,20 @@ function DetailPanel() {
           <div>
             <h3 className="text-sm font-black text-[#111827]">Engineering</h3>
             <p className="text-xs font-semibold text-[#64748B]">
-              ENG-001 <span className="ml-2 rounded bg-[#EAF7EF] px-2 py-0.5 text-[10px] text-[#168044]">Active</span>
+              ENG-001 <StatusBadge status="Active" className="ml-2 py-0.5 text-[10px]" />
             </p>
           </div>
         </div>
-        <button type="button" className="grid h-8 w-8 place-items-center rounded-md border border-[#DDE4F2] text-[#1F2A6D]">
+        <IconButton size="sm">
           <Pencil className="h-3.5 w-3.5" />
-        </button>
+        </IconButton>
       </div>
 
-      <div className="mt-5 space-y-3 border-t border-[#EEF2F7] pt-4 text-xs">
-        <p className="flex justify-between gap-4"><span className="font-bold text-[#64748B]">Department Head</span><span className="font-black text-[#111827]">Olivia Chen</span></p>
-        <p className="flex justify-between gap-4"><span className="font-bold text-[#64748B]">Parent Department</span><span className="font-black text-[#111827]">Corporate</span></p>
+      <DataList className="mt-5 border-t border-[#EEF2F7] pt-4">
+        <DataListItem label="Department Head" value="Olivia Chen" />
+        <DataListItem label="Parent Department" value="Corporate" />
         <p className="leading-5"><span className="font-bold text-[#64748B]">Description</span><br />Responsible for designing, building, and maintaining core user products and platform infrastructure.</p>
-      </div>
+      </DataList>
 
       <div className="mt-5 grid grid-cols-2 gap-3">
         {[
@@ -221,7 +226,7 @@ function DetailPanel() {
       <div className="mt-5">
         <div className="mb-3 flex items-center justify-between">
           <h4 className="text-xs font-black text-[#111827]">Assigned Users (Top 5)</h4>
-          <button type="button" className="text-xs font-black text-[#2E3A8C]">View all</button>
+          <Button variant="ghost" size="sm">View all</Button>
         </div>
         <div className="space-y-3">
           {teamMembers.map(([name, email, role]) => (
@@ -233,12 +238,12 @@ function DetailPanel() {
                 <p className="truncate text-xs font-black text-[#111827]">{name}</p>
                 <p className="truncate text-[11px] font-medium text-[#64748B]">{email}</p>
               </div>
-              <span className="rounded border border-[#DDE4F2] px-2 py-1 text-[10px] font-bold text-[#64748B]">{role}</span>
+              <Badge variant="outline" className="text-[10px]">{role}</Badge>
             </div>
           ))}
         </div>
       </div>
-    </aside>
+    </SectionCard>
   );
 }
 

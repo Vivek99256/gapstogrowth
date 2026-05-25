@@ -1,5 +1,6 @@
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { motion } from 'framer-motion';
+import { SectionCard } from '@/components/ui';
 
 const revenueData = [
   { month: 'Jan', revenue: 4000 },
@@ -22,9 +23,8 @@ export default function RevenueChart() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark:bg-gray-800 dark:border-gray-700"
     >
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Monthly Revenue</h3>
+      <SectionCard title="Monthly Revenue">
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={revenueData}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -35,6 +35,7 @@ export default function RevenueChart() {
           <Area type="monotone" dataKey="revenue" stroke="navy-600" fill="navy-100" />
         </AreaChart>
       </ResponsiveContainer>
+      </SectionCard>
     </motion.div>
   );
 }

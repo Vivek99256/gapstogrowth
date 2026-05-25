@@ -508,6 +508,15 @@
   .dark .select-field::placeholder {
     color: #d1d5db;
   }
+
+  .select-menu-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .select-menu-scroll::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Animation for gradual reveal */
