@@ -11,12 +11,12 @@ import Login from "./login/Login"
 // here 
 
 export default function HomePage() {
-  useEffect(() => {
-    const el = document.querySelector('.leftaside') as HTMLElement | null
-    if (el) {
-      el.style.display = 'none'
-    }
-  }, [])
+  // useEffect(() => {
+  //   const el = document.querySelector('.leftaside') as HTMLElement | null
+  //   if (el) {
+  //     el.style.display = 'none'
+  //   }
+  // }, [])
 
   return <Login />
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import GapsToGrowthLoader from '@/components/GapsToGrowthLoader';
 import {
   ArrowRight,
@@ -31,6 +31,39 @@ interface DetailItem {
   label: string;
   value: string;
 }
+
+type SessionData = {
+  url: string;
+  token: string;
+  subInstituteId: string;
+  userId: string;
+  orgType: string;
+};
+
+type ProfileResponse = {
+  data?: any;
+  employees?: any[];
+};
+
+const profileRequestCache = new Map<string, Promise<ProfileResponse>>();
+
+const getProfileRequest = (url: string) => {
+  const existingRequest = profileRequestCache.get(url);
+  if (existingRequest) return existingRequest;
+
+  const request = fetch(url).then(async (res) => {
+    if (!res.ok) throw new Error('Failed to fetch profile');
+    return res.json();
+  });
+
+  profileRequestCache.set(url, request);
+  request.then(
+    () => profileRequestCache.delete(url),
+    () => profileRequestCache.delete(url)
+  );
+
+  return request;
+};
 
 const navItems: NavItem[] = [
   { id: 'personal', label: 'Personal Details', icon: User },
@@ -332,7 +365,7 @@ const BankDetailsCard: React.FC<{ isActive?: boolean; bankDetails?: DetailItem[]
 export default function ProfileView() {
   const [activeSection, setActiveSection] = useState('personal');
   const [apiData, setApiData] = useState<any>(null);
-  const [sessionData, setSessionData] = useState<any>(() => {
+  const [sessionData] = useState<SessionData | null>(() => {
     if (typeof window === 'undefined') return null;
     try {
       const userData = localStorage.getItem('userData');
@@ -361,25 +394,38 @@ export default function ProfileView() {
   const defaultImage = 'https://cdn.builder.io/api/v1/image/assets/TEMP/630b9c5d4cf92bb87c22892f9e41967c298051a0?placeholderIfAbsent=true&apiKey=f18a54c668db405eb048e2b0a7685d39';
 
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    let isCurrent = true;
+
     const fetchProfile = async () => {
       if (!sessionData) {
         setLoading(false);
         return;
       }
+
+      setLoading(true);
+
       try {
-        const res = await fetch(`${sessionData?.url}/user/add_user/${sessionData?.userId}/edit?type=API&token=${sessionData?.token}&sub_institute_id=${sessionData?.subInstituteId}&org_type=${sessionData?.orgType}&syear=2025`);
-        if (!res.ok) throw new Error('Failed to fetch profile');
-        const json = await res.json();
+        const profileUrl = `${sessionData.url}/user/add_user/${sessionData.userId}/edit?type=API&token=${sessionData.token}&sub_institute_id=${sessionData.subInstituteId}&org_type=${sessionData.orgType}&syear=2025`;
+        const json = await getProfileRequest(profileUrl);
+        if (!isCurrent) return;
+
         setApiData(json.data); // only the data object from response, as requested
         setEmployeesList(json.employees || []);
       } catch (err) {
         console.error('Profile fetch error:', err);
       } finally {
-        setLoading(false);
+        if (isCurrent) {
+          setLoading(false);
+        }
       }
     };
+
     fetchProfile();
+
+    return () => {
+      isCurrent = false;
+    };
   }, [sessionData]);
 
   const employeeData = useMemo(() => {
@@ -482,7 +528,9 @@ export default function ProfileView() {
 
     const formatTime = (timeStr: string | null | undefined): string => {
       if (!timeStr) return '—';
-      const parts = timeStr.split(':');
+      // Ensure timeStr is string to prevent .split() errors on numbers
+      const str = String(timeStr);
+      const parts = str.split(':');
       let hour = parseInt(parts[0], 10);
       const minute = parts[1] || '00';
       const ampm = hour >= 12 ? 'PM' : 'AM';
@@ -515,8 +563,8 @@ export default function ProfileView() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[#F4F7FB]">
-        <GapsToGrowthLoader fullScreen label="Loading profile..." />
+      <div className="flex min-h-[520px] items-center justify-center bg-[#F4F7FB]">
+        <GapsToGrowthLoader label="Loading profile..." className="min-h-[360px]" />
       </div>
     );
   }

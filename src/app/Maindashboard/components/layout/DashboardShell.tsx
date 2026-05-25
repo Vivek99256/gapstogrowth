@@ -23,20 +23,11 @@ export default function DashboardShell({ children }: { children?: React.ReactNod
     }
   }, [router]);
 
-  // While we haven't confirmed a valid session, show the loader (prevents flash before redirect)
-  if (!hasValidSession) {
-    return (
-      <div className="relative h-[100dvh] max-h-[100dvh] overflow-hidden bg-[#F4F7FB] text-[#111827]">
-        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#F4F7FB]">
-          <GapsToGrowthLoader fullScreen label="Loading..." />
-        </div>
-      </div>
-    );
-  }
+  const isPageLoading = !hasValidSession || isNavigationLoading;
 
   return (
     <div className="relative h-[100dvh] max-h-[100dvh] overflow-hidden bg-[#F4F7FB] text-[#111827]">
-      {isNavigationLoading && (
+      {isPageLoading && (
         <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#F4F7FB]">
           <GapsToGrowthLoader fullScreen label="Loading..." />
         </div>
@@ -48,27 +39,29 @@ export default function DashboardShell({ children }: { children?: React.ReactNod
         <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-[#16A34A]/10 blur-3xl" />
       </div>
 
-      <div className={['relative z-10 flex h-full min-h-0', isNavigationLoading ? 'invisible' : ''].join(' ')}>
-        <Sidebar
-          isCollapsed={isSidebarCollapsed}
-          isMobileOpen={isMobileSidebarOpen}
-          onCloseMobile={() => setIsMobileSidebarOpen(false)}
-          onLoadingChange={setIsNavigationLoading}
-          onToggleCollapse={() => setIsSidebarCollapsed((value) => !value)}
-        />
-
-        <div className="flex h-full min-w-0 flex-1 flex-col overflow-hidden">
-          <Header
-            isSidebarCollapsed={isSidebarCollapsed}
-            onToggleSidebar={() => setIsSidebarCollapsed((value) => !value)}
-            onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
+      {hasValidSession && (
+        <div className={['relative z-10 flex h-full min-h-0', isNavigationLoading ? 'invisible' : ''].join(' ')}>
+          <Sidebar
+            isCollapsed={isSidebarCollapsed}
+            isMobileOpen={isMobileSidebarOpen}
+            onCloseMobile={() => setIsMobileSidebarOpen(false)}
+            onLoadingChange={setIsNavigationLoading}
+            onToggleCollapse={() => setIsSidebarCollapsed((value) => !value)}
           />
 
-          <main className="min-h-0 flex-1 overflow-y-auto px-4 pb-8 pt-5 sm:px-6 lg:px-8 g2g-page-scroll">
-            {children}
-          </main>
+          <div className="flex h-full min-w-0 flex-1 flex-col overflow-hidden">
+            <Header
+              isSidebarCollapsed={isSidebarCollapsed}
+              onToggleSidebar={() => setIsSidebarCollapsed((value) => !value)}
+              onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
+            />
+
+            <main className="min-h-0 flex-1 overflow-y-auto px-4 pb-8 pt-5 sm:px-6 lg:px-8 g2g-page-scroll">
+              {children}
+            </main>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
