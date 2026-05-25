@@ -12,7 +12,7 @@ import {
   UserRound,
   X,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 type HeaderProps = {
@@ -29,14 +29,39 @@ const menuAnimation = {
 };
 
 export default function Header({
-  isSidebarCollapsed: _isSidebarCollapsed,
-  onToggleSidebar: _onToggleSidebar,
-  onOpenMobileSidebar,
+   isSidebarCollapsed: _isSidebarCollapsed,
+   onToggleSidebar: _onToggleSidebar,
+   onOpenMobileSidebar,
 }: HeaderProps) {
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const router = useRouter();
+   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+   const [isSearchFocused, setIsSearchFocused] = useState(false);
+   const [userName, setUserName] = useState('User');
+   const router = useRouter();
+
+useEffect(() => {
+    if (typeof window === "undefined") return;
+    
+    const loadUserData = () => {
+      const userData = localStorage.getItem("userData");
+      if (userData) {
+        try {
+          const parsed = JSON.parse(userData);
+          // Prefer first_name, then full_name, fallback to User
+          const name = parsed.first_name || parsed.full_name || "User";
+          setUserName(name);
+        } catch {
+          setUserName("User");
+        }
+      }
+    };
+
+    loadUserData();
+
+    // Listen for storage changes to update name across tabs
+    window.addEventListener("storage", loadUserData);
+    return () => window.removeEventListener("storage", loadUserData);
+  }, []);
 
   const handleSignOut = () => {
     localStorage.removeItem('userData');
@@ -161,7 +186,7 @@ export default function Header({
                 <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#1F2A6D] via-[#2E3A8C] to-[#FF6A00] text-white shadow-[0_12px_26px_rgba(31,42,109,0.25)]">
                   <UserRound className="h-4 w-4" />
                 </span>
-                <span className="hidden lg:block">John Doe</span>
+                <span className="hidden lg:block">{userName}</span>
                 <ChevronDown className="hidden h-4 w-4 text-[#6B7280] lg:block" />
               </button>
 

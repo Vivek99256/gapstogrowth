@@ -107,7 +107,7 @@ const ProfileHeader: React.FC<{ employee?: any }> = ({ employee = {} }) => (
     <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
         <div className="relative mx-auto sm:mx-0">
-          <div className="grid h-32 w-32 place-items-center rounded-full bg-gradient-to-br from-[#1F2A6D] via-[#2E3A8C] to-[#FF6A00] text-4xl font-bold text-white shadow-[0_18px_40px_rgba(31,42,109,0.28)] ring-[12px] ring-[#FFF3EA] sm:h-28 sm:w-28 overflow-hidden">
+          <div className="grid h-32 w-32 place-items-center rounded-full bg-white text-4xl font-bold text-white shadow-[0_18px_40px_rgba(31,42,109,0.28)] ring-[12px] ring-[#FFF3EA] sm:h-28 sm:w-28 overflow-hidden">
             <img 
               src={employee.userprofile} 
               alt={employee.name || 'Profile'} 
