@@ -25,7 +25,7 @@ export default function WorkflowStepper({ activeStep, onStepChange }: WorkflowSt
               ].join(' ')}
               aria-current={isActive ? 'step' : undefined}
             >
-              <span className="min-w-0 truncate text-l font-bold">{step.title}</span>
+              <span className="min-w-0 truncate text-lg font-bold">{step.title}</span>
             </TabsTrigger>
           );
         })}

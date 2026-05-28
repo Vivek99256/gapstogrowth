@@ -41,42 +41,54 @@ export default function ForgotPasswordPage() {
 
   return (
     <AuthShell>
-      <section>
-        <div className="mb-8">
-          <p className="mb-2 text-sm font-semibold text-[#FF6A00]">Forgot Password?</p>
-          <h1 className="text-3xl font-bold text-[#1F2A6D]">Reset Password</h1>
-        </div>
+      <div className="text-center">
+        <h2 className="text-[28px] font-extrabold text-[#071c66] sm:text-[34px]">
+          <span className="text-[#ff5b05]">Forgot Password?</span>
+        </h2>
+        <p className="mt-3 text-base text-[#586485]">
+          Enter your email to reset your password
+        </p>
+      </div>
 
-        <form onSubmit={sendResetLink} className="space-y-5">
-          <div>
-            <label htmlFor="email" className="mb-2 block text-sm font-medium text-[#1F2A6D]">Email</label>
+      <form onSubmit={sendResetLink} className="mt-6 space-y-4">
+        <div>
+          <label
+            htmlFor="email"
+            className="mb-2 block text-sm font-bold text-[#111b45]"
+          >
+            Email Address
+          </label>
+          <div className="relative">
             <input
               id="email"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter email or mobile number"
+              placeholder="Enter your email"
               required
-              className="w-full rounded-xl border border-[#DCE8FF] bg-white px-4 py-3 text-[15px] text-[#1F2A6D] transition-all placeholder:text-[#94A3B8] focus:border-[#FF6A00] focus:outline-none focus:ring-2 focus:ring-[#FF6A00]/40"
+              className="h-[52px] w-full rounded-xl border border-[#d4dae8] bg-white px-5 pr-14 text-base text-[#111b45] shadow-[0_4px_10px_rgba(17,27,69,0.03)] outline-none transition placeholder:text-[#8b95b7] focus:border-[#ff6a00] focus:ring-2 focus:ring-[#ff6a00]/20"
             />
           </div>
+        </div>
 
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-[#3B5BF5] px-4 py-3.5 font-semibold text-white shadow-md shadow-[#3B5BF5]/30 transition-all hover:bg-[#2563EB]"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Sending...' : 'Send Reset Link'}
-          </button>
-
-          <div className="text-center pt-2">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`flex h-[52px] w-full items-center justify-center rounded-xl bg-[linear-gradient(100deg,#14258e_0%,#671d69_45%,#ff5b05_100%)] px-4 text-base font-bold text-white shadow-[0_13px_22px_rgba(255,91,5,0.14)] transition ${isSubmitting
+            ? "cursor-not-allowed opacity-80"
+            : "hover:brightness-105 active:scale-[0.99]"
+            }`}
+        >
+          {isSubmitting ? 'Sending...' : 'Send Reset Link'}
+        </button>
+        <div className="text-center pt-2">
             <button type="button" onClick={() => router.push('/login')} className="text-sm text-[#FF6A00] font-semibold">Back to Login</button>
           </div>
-        </form>
+      </form>
 
-        {message && (
-          <p className="mt-5 rounded-xl bg-[#EEF4FF] px-4 py-3 text-sm font-medium text-[#1F2A6D]">{message}</p>
-        )}
-      </section>
+      {message && (
+        <p className="mt-5 rounded-xl bg-[#EEF4FF] px-4 py-3 text-sm font-medium text-[#1F2A6D]">{message}</p>
+      )}
     </AuthShell>
   );
 }
