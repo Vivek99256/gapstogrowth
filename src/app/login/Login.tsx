@@ -48,16 +48,10 @@ export default function Login() {
   };
 
   return (
-    <AuthShell>
-      <div className="text-center">
-        <h2 className="text-[28px] font-extrabold text-[#071c66] sm:text-[34px]">
-          Welcome <span className="text-[#ff5b05]">Back!</span>
-        </h2>
-        <p className="mt-3 text-base text-[#586485]">
-          Login to continue your growth journey
-        </p>
-      </div>
-
+    <AuthShell 
+      heading="Welcome Back!"
+      description="Login to continue your growth journey"
+    >
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <div>
           <label

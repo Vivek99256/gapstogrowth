@@ -5,9 +5,11 @@ import { ReactNode } from "react";
 
 type AuthShellProps = {
   children: ReactNode;
+  heading?: string;
+  description?: string;
 };
 
-export default function AuthShell({ children }: AuthShellProps) {
+export default function AuthShell({ children, heading, description }: AuthShellProps) {
   return (
     <main className="relative h-screen overflow-hidden bg-[linear-gradient(135deg,#f8f9ff_0%,#ffffff_100%)] text-[#071957]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_16%,rgba(46,58,140,0.18),transparent_34%),radial-gradient(circle_at_91%_72%,rgba(255,106,0,0.20),transparent_32%)]" />
@@ -36,17 +38,13 @@ export default function AuthShell({ children }: AuthShellProps) {
 
           <div className="relative z-20 mt-2 max-w-2xl sm:mt-3 lg:mt-4">
             <h1 className="text-[34px] font-extrabold leading-[1.16] tracking-normal text-[#071c66] sm:text-[46px] lg:text-[48px] xl:text-[54px] 2xl:text-[58px]">
-              Bridging Gaps,
+              {heading ?? "Bridging Gaps,"}
               <br />
               Accelerating{" "}
-              <span className="text-[#ff5b05]">Growth</span>
+              <span className="text-[#ff5b05]">{description?.split(' ')[0] ?? "Growth"}</span>
             </h1>
             <p className="mt-4 max-w-[560px] text-base leading-7 text-[#526083] xl:text-lg">
-              Empowering organizations to build the right skills,
-              <br className="hidden sm:block" />
-              assign the right roles, and unlock the right opportunities
-              <br className="hidden sm:block" />
-              for everyone.
+              {description ?? "Empowering organizations to build the right skills,\nassign the right roles, and unlock the right opportunities\nfor everyone."}
             </p>
           </div>
 
