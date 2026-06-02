@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import { SectionCard } from '@/components/ui';
 
 const departmentData = [
-  { name: 'Sales', value: 400, fill: '#4361ee' },
-  { name: 'Marketing', value: 300, fill: '#3f37c9' },
-  { name: 'Engineering', value: 500, fill: '#4cc9f0' },
-  { name: 'HR', value: 200, fill: '#f8961e' },
-  { name: 'Finance', value: 250, fill: '#f3722c' },
+  { name: 'Sales', value: 400, fill: 'hsl(var(--brand))' },
+  { name: 'Marketing', value: 300, fill: 'hsl(var(--secondary-foreground))' },
+  { name: 'Engineering', value: 500, fill: 'hsl(var(--ring))' },
+  { name: 'HR', value: 200, fill: 'hsl(var(--warning))' },
+  { name: 'Finance', value: 250, fill: 'hsl(var(--primary))' },
 ];
 
 export default function DepartmentChart() {

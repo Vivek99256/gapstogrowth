@@ -26,17 +26,17 @@ export default function DashboardShell({ children }: { children?: React.ReactNod
   const isPageLoading = !hasValidSession || isNavigationLoading;
 
   return (
-    <div className="relative h-[100dvh] max-h-[100dvh] overflow-hidden bg-[#F4F7FB] text-[#111827]">
+    <div className="relative h-[100dvh] max-h-[100dvh] overflow-hidden bg-background text-foreground">
       {isPageLoading && (
-        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#F4F7FB]">
+        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-background">
           <GapsToGrowthLoader fullScreen label="Loading..." />
         </div>
       )}
 
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#2E3A8C]/15 blur-3xl" />
-        <div className="absolute right-10 top-28 h-80 w-80 rounded-full bg-[#FF6A00]/10 blur-3xl" />
-        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-[#16A34A]/10 blur-3xl" />
+        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-brand/15 blur-3xl" />
+        <div className="absolute right-10 top-28 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-success/10 blur-3xl" />
       </div>
 
       {hasValidSession && (

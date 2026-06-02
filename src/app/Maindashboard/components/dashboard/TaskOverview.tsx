@@ -42,9 +42,9 @@ const tasks = [
 ];
 
 const taskStatusIcon = {
-  completed: { icon: CheckCircle, className: 'bg-[#EAF7EF] text-[#168044]' },
-  in_progress: { icon: AlertTriangle, className: 'bg-[#EEF2FF] text-[#2E3A8C]' },
-  pending: { icon: Clock, className: 'bg-[#FFF3EA] text-[#C45B00]' },
+  completed: { icon: CheckCircle, className: 'bg-success/15 text-success' },
+  in_progress: { icon: AlertTriangle, className: 'bg-secondary text-secondary-foreground' },
+  pending: { icon: Clock, className: 'bg-warning/15 text-warning' },
 };
 
 export default function TaskOverview() {
@@ -57,27 +57,27 @@ export default function TaskOverview() {
             const Icon = status.icon;
 
             return (
-              <div key={task.id} className="flex items-start space-x-3 rounded-lg bg-[#F8FAFE] p-3">
+              <div key={task.id} className="flex items-start space-x-3 rounded-lg bg-muted p-3">
                 <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${status.className}`}>
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1">
                   <div className="flex items-center justify-between gap-3">
-                    <h4 className="font-black text-[#111827]">{task.title}</h4>
+                    <h4 className="font-black text-foreground">{task.title}</h4>
                     <StatusBadge status={task.priority} />
                   </div>
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-[#6B7280]">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-muted-foreground">
                     <span>Due: {task.dueDate}</span>
                     <span>&bull;</span>
                     <span>Assignee: {task.assignee}</span>
                   </div>
                   <Progress value={task.progress} className="mt-1 h-2.5" />
-                  <div className="mt-1 text-xs font-medium text-[#6B7280]">{task.progress}%</div>
+                  <div className="mt-1 text-xs font-medium text-muted-foreground">{task.progress}%</div>
                 </div>
               </div>
             );
           })}
-          <div className="border-t border-[#EEF1F7] pt-3">
+          <div className="border-t border-border pt-3">
             <Button variant="secondary" className="w-full" leftIcon={<Plus className="h-4 w-4" />}>
               Add New Task
             </Button>

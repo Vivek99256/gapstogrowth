@@ -19,9 +19,9 @@ export function IconButton({
 
   const variantClass: Record<string, string> = {
     primary: "",
-    outline: "border-[#DCE3F2] bg-white text-[#1F2A6D] hover:bg-[#F4F7FB]",
-    ghost: "border-transparent bg-transparent text-[#1F2A6D] hover:bg-[#EEF2FF]",
-    subtle: "border-[#DDE4F2] bg-[#F8FAFE] text-[#2E3A8C] hover:bg-[#EEF2FF]",
+    outline: "border-border bg-card text-secondary-foreground hover:bg-muted",
+    ghost: "border-transparent bg-transparent text-secondary-foreground hover:bg-secondary",
+    subtle: "border-border bg-muted text-secondary-foreground hover:bg-secondary",
   };
 
   return (

@@ -19,7 +19,7 @@ function AccordionItem({ ...props }: React.ComponentProps<typeof AccordionPrimit
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn("border-b border-[#EEF1F7]", props.className)}
+      className={cn("border-b border-border", props.className)}
       {...props}
     />
   );
@@ -31,7 +31,7 @@ function AccordionTrigger({ className, ...props }: React.ComponentProps<typeof A
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "flex flex-1 items-center justify-between gap-4 px-4 py-4 text-left text-sm font-black text-[#111827] transition-all",
+          "flex flex-1 items-center justify-between gap-4 px-4 py-4 text-left text-sm font-black text-foreground transition-all",
           className
         )}
         {...props}

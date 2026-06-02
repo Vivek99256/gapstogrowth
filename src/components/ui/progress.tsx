@@ -16,13 +16,13 @@ function Progress({ className, value = 0, max = 100, ...props }: ProgressProps) 
       aria-valuemin={0}
       aria-valuenow={value}
       className={cn(
-        "bg-[#EEF2FF] relative h-2 w-full overflow-hidden rounded-full",
+        "relative h-2 w-full overflow-hidden rounded-full bg-secondary",
         className
       )}
       {...props}
     >
       <div
-        className="bg-[#FF6A00] h-full rounded-full transition-all"
+        className="h-full rounded-full bg-primary transition-all"
         style={{ width: `${(value / max) * 100}%` }}
       />
     </div>

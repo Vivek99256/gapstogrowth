@@ -7,7 +7,7 @@ function Label({ className, ...props }: React.ComponentProps<"label">) {
     <label
       data-slot="label"
       className={cn(
-        "flex items-center gap-2 text-xs font-bold text-[#111827] select-none",
+        "flex items-center gap-2 text-xs font-bold text-foreground select-none",
         className
       )}
       {...props}
@@ -16,7 +16,7 @@ function Label({ className, ...props }: React.ComponentProps<"label">) {
 }
 
 function RequiredIndicator() {
-  return <span className="text-[#FF6A00]" aria-hidden="true">*</span>;
+  return <span className="text-primary" aria-hidden="true">*</span>;
 }
 
 export { Label, RequiredIndicator };

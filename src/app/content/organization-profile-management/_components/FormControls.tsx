@@ -1,4 +1,4 @@
-import { Button, Input, Label, RequiredIndicator, Textarea } from '@/components/ui';
+import { Button, Input, RequiredIndicator, Textarea } from '@/components/ui';
 import {
   Select,
   SelectContent,
@@ -7,12 +7,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Field, FieldGroup } from './types';
+import { FormActions as SharedFormActions, FormField as SharedFormField, FormSection } from '@/components/forms';
+import { useId } from 'react';
 
 export function RequiredMark() {
   return <RequiredIndicator />;
 }
 
 function FormField({ field }: { field: Field }) {
+  const fieldId = useId();
   const spanClass =
     field.span === 'full'
       ? 'lg:col-span-3'
@@ -23,15 +26,11 @@ function FormField({ field }: { field: Field }) {
           : '';
 
   return (
-    <Label className={`block ${spanClass}`}>
-      <span className="flex items-center gap-1 text-xs font-bold text-[#111827]">
-        {field.label}
-        {field.required && <RequiredMark />}
-      </span>
-      <span className="mt-2 block">
+    <SharedFormField className={spanClass} label={field.label} htmlFor={fieldId} required={field.required} helpText={field.helper}>
+      <span className="block">
         {field.type === 'select' ? (
         <Select defaultValue={field.value}>
-          <SelectTrigger className="h-12 rounded-lg px-4 text-xs font-semibold">
+          <SelectTrigger id={fieldId} className="h-12 rounded-lg px-4 text-xs font-semibold">
             <SelectValue placeholder={field.placeholder} />
           </SelectTrigger>
           <SelectContent>
@@ -43,13 +42,12 @@ function FormField({ field }: { field: Field }) {
           </SelectContent>
         </Select>
         ) : field.type === 'textarea' ? (
-          <Textarea defaultValue={field.value} placeholder={field.placeholder} />
+          <Textarea id={fieldId} defaultValue={field.value} placeholder={field.placeholder} />
         ) : (
-          <Input defaultValue={field.value} placeholder={field.placeholder} prefix={field.prefix} />
+          <Input id={fieldId} defaultValue={field.value} placeholder={field.placeholder} prefix={field.prefix} />
         )}
       </span>
-      {field.helper && <span className="mt-2 block text-xs font-medium text-[#6B7280]">{field.helper}</span>}
-    </Label>
+    </SharedFormField>
   );
 }
 
@@ -57,19 +55,22 @@ export function FieldSection({ group }: { group: FieldGroup }) {
   const Icon = group.icon;
 
   return (
-    <section className="border-t border-[#EEF1F7] pt-5 first:border-t-0 first:pt-0">
-      <div className="mb-4 flex items-center gap-3">
-        <span className="grid h-8 w-8 place-items-center rounded-lg bg-[#EEF2FF] text-[#2E3A8C]">
+    <FormSection
+      title={(
+        <div className="flex items-center gap-3">
+        <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary text-secondary-foreground">
           <Icon className="h-4 w-4" />
         </span>
-        <h3 className="text-sm font-black text-[#111827]">{group.title}</h3>
-      </div>
+          <span>{group.title}</span>
+        </div>
+      )}
+    >
       <div className="grid gap-x-6 gap-y-4 md:grid-cols-2 lg:grid-cols-3">
         {group.fields.map((field) => (
           <FormField key={`${group.title}-${field.label}`} field={field} />
         ))}
       </div>
-    </section>
+    </FormSection>
   );
 }
 
@@ -91,13 +92,13 @@ export function FormActions({
   draftLabel?: string;
 }) {
   return (
-    <div className="mt-6 flex flex-col gap-3 border-t border-[#EEF2F7] pt-5 sm:flex-row sm:items-center sm:justify-end">
+    <SharedFormActions className="mt-6">
       <Button type="button" variant="secondary" className="border-[#FFB176] bg-[#FFF3EA] text-[#C45B00] hover:bg-[#FFE8D4]">
         {draftLabel}
       </Button>
       <Button type="submit" className="px-6">
         {submitLabel}
       </Button>
-    </div>
+    </SharedFormActions>
   );
 }

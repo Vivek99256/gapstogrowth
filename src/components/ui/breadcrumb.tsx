@@ -6,7 +6,7 @@ function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
   return (
     <nav
       data-slot="breadcrumb"
-      className={cn("text-sm font-bold text-[#6B7280]", className)}
+      className={cn("text-sm font-bold text-muted-foreground", className)}
       aria-label="Breadcrumb"
       {...props}
     />
@@ -50,7 +50,7 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
       role="link"
       aria-current="page"
       aria-disabled="true"
-      className={cn("text-[#1F2A6D]", className)}
+      className={cn("text-secondary-foreground", className)}
       {...props}
     />
   );

@@ -31,30 +31,30 @@ function MetricCard({
           {Icon && (
             <div
               className={cn(
-                "grid h-11 w-11 place-items-center rounded-lg bg-[#EEF2FF] text-[#2E3A8C]",
+                "grid h-11 w-11 place-items-center rounded-lg bg-secondary text-secondary-foreground",
                 iconClassName
               )}
             >
               <Icon className="h-5 w-5" />
             </div>
           )}
-          <h3 className="text-sm font-bold text-[#6B7280]">{title}</h3>
+          <h3 className="text-sm font-bold text-muted-foreground">{title}</h3>
         </div>
-        <p className="mb-2 text-2xl font-black text-[#111827]">{value}</p>
+        <p className="mb-2 text-2xl font-black text-foreground">{value}</p>
         {change && (
           <p className="text-sm font-semibold">
             <span
               className={
                 changeType === "positive"
-                  ? "text-[#168044]"
+                  ? "text-success"
                   : changeType === "negative"
-                    ? "text-[#B91C1C]"
-                    : "text-[#6B7280]"
+                    ? "text-danger"
+                    : "text-muted-foreground"
               }
             >
               {change}
             </span>
-            <span className="ml-2 text-xs font-medium text-[#8A94A8]">monthly</span>
+            <span className="ml-2 text-xs font-medium text-muted-foreground">monthly</span>
           </p>
         )}
         {typeof progress === "number" && <Progress value={progress} className="mt-3" />}

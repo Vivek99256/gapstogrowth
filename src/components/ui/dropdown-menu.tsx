@@ -37,8 +37,8 @@ function DropdownMenuSubTrigger({ className, inset, ...props }: React.ComponentP
       className={cn(
         "flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none",
         "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
-        "focus:bg-[#EEF2FF]",
-        "data-[state=open]:bg-[#EEF2FF]",
+        "focus:bg-secondary",
+        "data-[state=open]:bg-secondary",
         inset && "pl-8",
         className
       )}
@@ -55,7 +55,7 @@ function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<ty
     <DropdownMenuPrimitive.SubContent
       data-slot="dropdown-menu-sub-content"
       className={cn(
-        "z-50 min-w-[8rem] overflow-hidden rounded-lg border border-[#DDE4F2] bg-white p-1 text-[#111827] shadow-[0_18px_48px_rgba(31,42,109,0.14)]",
+        "z-50 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-lg",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         className
       )}
@@ -67,12 +67,11 @@ function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<ty
 function DropdownMenuContent({ className, sideOffset = 4, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
   return (
     <DropdownMenuPrimitive.Portal>
-      <DropdownMenuPrimitive.Trigger />
       <DropdownMenuPrimitive.Content
         sideOffset={sideOffset}
         data-slot="dropdown-menu-content"
         className={cn(
-          "z-50 min-w-[8rem] overflow-hidden rounded-lg border border-[#DDE4F2] bg-white p-1 text-[#111827] shadow-[0_18px_48px_rgba(31,42,109,0.14)]",
+          "z-50 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-lg",
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           className
         )}
@@ -90,8 +89,8 @@ function DropdownMenuItem({ className, inset, ...props }: React.ComponentProps<t
         "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none",
         "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
         "transition-colors",
-        "focus:bg-[#EEF2FF] focus:text-[#1F2A6D]",
-        "data-[state=open]:bg-[#EEF2FF]",
+        "focus:bg-secondary focus:text-secondary-foreground",
+        "data-[state=open]:bg-secondary",
         inset && "pl-8",
         className
       )}
@@ -106,8 +105,8 @@ function DropdownMenuCheckboxItem({ className, children, checked, ...props }: Re
       data-slot="dropdown-menu-checkbox-item"
       className={cn(
         "relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none select-none",
-        "focus:bg-[#EEF2FF]",
-        "data-[state=open]:bg-[#EEF2FF]",
+        "focus:bg-secondary",
+        "data-[state=open]:bg-secondary",
         className
       )}
       checked={checked}
@@ -115,7 +114,7 @@ function DropdownMenuCheckboxItem({ className, children, checked, ...props }: Re
     >
       <span className="pointer-events-none absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <Check className="h-4 w-4 text-[#FF6A00]" />
+          <Check className="h-4 w-4 text-primary" />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -129,15 +128,15 @@ function DropdownMenuRadioItem({ className, children, ...props }: React.Componen
       data-slot="dropdown-menu-radio-item"
       className={cn(
         "relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none select-none",
-        "focus:bg-[#EEF2FF]",
-        "data-[state=open]:bg-[#EEF2FF]",
+        "focus:bg-secondary",
+        "data-[state=open]:bg-secondary",
         className
       )}
       {...props}
     >
       <span className="pointer-events-none absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <span className="h-2 w-2 rounded-full bg-[#FF6A00]" />
+          <span className="h-2 w-2 rounded-full bg-primary" />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -149,7 +148,7 @@ function DropdownMenuLabel({ className, inset, ...props }: React.ComponentProps<
   return (
     <DropdownMenuPrimitive.Label
       data-slot="dropdown-menu-label"
-      className={cn("px-2 py-1.5 text-xs font-black text-[#111827]", inset && "pl-8", className)}
+      className={cn("px-2 py-1.5 text-xs font-black text-foreground", inset && "pl-8", className)}
       {...props}
     />
   );
@@ -159,7 +158,7 @@ function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typ
   return (
     <DropdownMenuPrimitive.Separator
       data-slot="dropdown-menu-separator"
-      className={cn("h-px bg-[#EEF1F7]", className)}
+      className={cn("h-px bg-border", className)}
       {...props}
     />
   );
@@ -169,7 +168,7 @@ function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<"spa
   return (
     <span
       data-slot="dropdown-menu-shortcut"
-      className={cn("ml-auto text-xs tracking-widest text-[#9CA3AF]", className)}
+      className={cn("ml-auto text-xs tracking-widest text-muted-foreground", className)}
       {...props}
     />
   );

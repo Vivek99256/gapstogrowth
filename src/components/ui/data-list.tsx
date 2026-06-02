@@ -8,8 +8,8 @@ function DataList({ className, ...props }: HTMLAttributes<HTMLDListElement>) {
 function DataListItem({ label, value, className }: { label: ReactNode; value: ReactNode; className?: string }) {
   return (
     <div className={cn("flex justify-between gap-4", className)}>
-      <dt className="font-bold text-[#64748B]">{label}</dt>
-      <dd className="text-right font-black text-[#111827]">{value}</dd>
+      <dt className="font-bold text-muted-foreground">{label}</dt>
+      <dd className="text-right font-black text-foreground">{value}</dd>
     </div>
   );
 }

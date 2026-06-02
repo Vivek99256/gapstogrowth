@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Button, SectionCard, StatusBadge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
+import { Button, SectionCard, StatusBadge } from '@/components/ui';
+import { EnterpriseDataTable, type DataTableColumn, type DataTableFilter } from '@/components/data-table';
 
 const transactions = [
   {
@@ -44,6 +45,28 @@ const transactions = [
   },
 ];
 
+type Transaction = (typeof transactions)[number];
+
+const transactionColumns: DataTableColumn<Transaction>[] = [
+  { id: 'date', header: 'Date', cell: (transaction) => transaction.date, sortValue: (transaction) => transaction.date },
+  { id: 'description', header: 'Description', cell: (transaction) => transaction.description, sortValue: (transaction) => transaction.description },
+  { id: 'category', header: 'Category', cell: (transaction) => transaction.category, sortValue: (transaction) => transaction.category },
+  { id: 'amount', header: 'Amount', cell: (transaction) => <span className="font-black">{transaction.amount}</span>, sortValue: (transaction) => transaction.amount },
+  { id: 'status', header: 'Status', cell: (transaction) => <StatusBadge status={transaction.status} />, sortValue: (transaction) => transaction.status },
+];
+
+const transactionFilters: DataTableFilter<Transaction>[] = [
+  {
+    id: 'category',
+    label: 'categories',
+    options: [
+      { label: 'Income', value: 'Income' },
+      { label: 'Expense', value: 'Expense' },
+    ],
+    predicate: (transaction, value) => transaction.category === value,
+  },
+];
+
 export default function RecentTransactions() {
   return (
     <motion.div
@@ -52,42 +75,13 @@ export default function RecentTransactions() {
       transition={{ duration: 0.5 }}
     >
       <SectionCard title="Recent Transactions" action={<Button variant="ghost" size="sm">View All</Button>}>
-      <div className="overflow-x-auto">
-        <Table className="min-w-full">
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead className="px-6">Date</TableHead>
-              <TableHead className="px-6">Description</TableHead>
-              <TableHead className="px-6">Category</TableHead>
-              <TableHead className="px-6">Amount</TableHead>
-              <TableHead className="px-6">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {transactions.map((transaction) => (
-              <TableRow
-                key={transaction.id}
-              >
-                <TableCell className="whitespace-nowrap px-6 text-sm">
-                  {transaction.date}
-                </TableCell>
-                <TableCell className="whitespace-nowrap px-6 text-sm">
-                  {transaction.description}
-                </TableCell>
-                <TableCell className="whitespace-nowrap px-6 text-sm">
-                  {transaction.category}
-                </TableCell>
-                <TableCell className="whitespace-nowrap px-6 text-sm font-black">
-                  {transaction.amount}
-                </TableCell>
-                <TableCell className="whitespace-nowrap px-6">
-                  <StatusBadge status={transaction.status} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+        <EnterpriseDataTable
+          columns={transactionColumns}
+          data={transactions}
+          getRowId={(transaction) => String(transaction.id)}
+          getSearchText={(transaction) => Object.values(transaction).join(' ')}
+          filters={transactionFilters}
+        />
       </SectionCard>
     </motion.div>
   );

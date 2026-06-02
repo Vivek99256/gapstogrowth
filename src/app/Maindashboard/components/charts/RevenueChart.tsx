@@ -32,7 +32,7 @@ export default function RevenueChart() {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Area type="monotone" dataKey="revenue" stroke="navy-600" fill="navy-100" />
+          <Area type="monotone" dataKey="revenue" stroke="hsl(var(--brand))" fill="hsl(var(--secondary))" />
         </AreaChart>
       </ResponsiveContainer>
       </SectionCard>

@@ -7,7 +7,7 @@ const activities = [
     id: 1,
     type: 'sale',
     icon: DollarSign,
-    color: 'bg-orange-100 text-orange-600',
+    color: 'bg-accent text-accent-foreground',
     title: 'New Sale Closed',
     description: 'Enterprise deal worth $24,500 closed with Acme Corp',
     time: '2 min ago',
@@ -17,7 +17,7 @@ const activities = [
     id: 2,
     type: 'task',
     icon: Check,
-    color: 'bg-green-100 text-green-600',
+    color: 'bg-success/15 text-success',
     title: 'Task Completed',
     description: 'Q3 financial report finalized by Sarah Chen',
     time: '15 min ago',
@@ -27,7 +27,7 @@ const activities = [
     id: 3,
     type: 'meeting',
     icon: Users,
-    color: 'bg-blue-100 text-blue-600',
+    color: 'bg-secondary text-secondary-foreground',
     title: 'Team Meeting',
     description: 'Weekly sync with marketing team started',
     time: '30 min ago',
@@ -37,7 +37,7 @@ const activities = [
     id: 4,
     type: 'alert',
     icon: AlertTriangle,
-    color: 'bg-red-100 text-red-600',
+    color: 'bg-danger/15 text-danger',
     title: 'System Alert',
     description: 'Server response time increased by 15%',
     time: '1 hour ago',
@@ -47,7 +47,7 @@ const activities = [
     id: 5,
     type: 'login',
     icon: Clock,
-    color: 'bg-purple-100 text-purple-600',
+    color: 'bg-muted text-muted-foreground',
     title: 'User Login',
     description: 'John Doe logged in from New York',
     time: '2 hours ago',
@@ -78,10 +78,10 @@ export default function ActivityTimeline() {
             )}
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between">
-                <h4 className="font-medium text-gray-900 dark:text-white">{activity.title}</h4>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{activity.time}</p>
+                <h4 className="font-medium text-foreground">{activity.title}</h4>
+                <p className="text-xs text-muted-foreground">{activity.time}</p>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">{activity.description}</p>
+              <p className="text-sm text-muted-foreground">{activity.description}</p>
             </div>
           </div>
         ))}

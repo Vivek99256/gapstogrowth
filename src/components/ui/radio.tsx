@@ -20,7 +20,7 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        "h-4 w-4 rounded-full border border-[#D7DDEB] text-[#FF6A00] shadow-sm outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-4 focus-visible:ring-[#FF6A00]/10",
+        "h-4 w-4 rounded-full border border-input text-primary shadow-sm outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-4 focus-visible:ring-ring/10",
         className
       )}
       {...props}

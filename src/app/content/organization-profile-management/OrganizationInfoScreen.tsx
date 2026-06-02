@@ -3,6 +3,7 @@
 import { ArrowRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { PageHeader } from '@/components/ui';
+import { ContentContainer } from '@/components/layout/content-container';
 import { RequiredMark } from './_components/FormControls';
 
 import WorkflowStepper from './_components/WorkflowStepper';
@@ -36,7 +37,7 @@ export default function OrganizationInfoScreen() {
   }, [activeStep]);
 
   return (
-    <div className="mx-auto w-full max-w-[1440px] ">
+    <ContentContainer>
       <PageHeader
         breadcrumbs={['Organization Management', 'Organization Details']}
         title="Add Organization Details"
@@ -68,6 +69,6 @@ export default function OrganizationInfoScreen() {
         </div>
       </section>
 
-    </div>
+    </ContentContainer>
   );
 }

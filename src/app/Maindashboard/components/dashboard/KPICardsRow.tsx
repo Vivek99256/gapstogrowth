@@ -10,8 +10,8 @@ const kpiData = [
     change: "+12.5%",
     changeType: "positive" as const,
     icon: "DollarSign" as KPIIcon,
-    iconBg: "bg-orange-100",
-    iconColor: "text-orange-600",
+    iconBg: "bg-accent",
+    iconColor: "text-accent-foreground",
     sparkline: [30, 40, 35, 50, 49, 60, 70, 90, 105],
   },
   {
@@ -20,8 +20,8 @@ const kpiData = [
     change: "+3.2%",
     changeType: "positive" as const,
     icon: "Users" as KPIIcon,
-    iconBg: "bg-navy-100",
-    iconColor: "text-navy-600",
+    iconBg: "bg-secondary",
+    iconColor: "text-secondary-foreground",
     sparkline: [100, 120, 130, 110, 130, 140, 150, 160, 170],
   },
   {
@@ -30,8 +30,8 @@ const kpiData = [
     change: "+2.1%",
     changeType: "positive" as const,
     icon: "TrendingUp" as KPIIcon,
-    iconBg: "bg-orange-100",
-    iconColor: "text-orange-600",
+    iconBg: "bg-accent",
+    iconColor: "text-accent-foreground",
     sparkline: [10, 15, 8, 12, 18, 20, 22, 24, 25],
   },
   {
@@ -40,8 +40,8 @@ const kpiData = [
     change: "-0.5%",
     changeType: "negative" as const,
     icon: "Users" as KPIIcon,
-    iconBg: "bg-navy-100",
-    iconColor: "text-navy-600",
+    iconBg: "bg-secondary",
+    iconColor: "text-secondary-foreground",
     sparkline: [90, 91, 92, 93, 91, 92, 93, 92, 92],
   },
 ];

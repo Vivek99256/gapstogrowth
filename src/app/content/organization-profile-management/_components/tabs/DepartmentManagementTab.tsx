@@ -14,23 +14,11 @@ import {
   DataList,
   DataListItem,
   IconButton,
-  Pagination,
-  PaginationButton,
   SearchInput,
   SectionCard,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   StatusBadge,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from '@/components/ui';
+import { EnterpriseDataTable, type DataTableColumn, type DataTableFilter } from '@/components/data-table';
 import { FormActions } from '../FormControls';
 
 const departments = [
@@ -85,6 +73,43 @@ const teamMembers = [
   ['Liam OConnor', 'liam.oconnor@apex.com', 'Designer'],
 ];
 
+type Department = (typeof departments)[number];
+
+const departmentColumns: DataTableColumn<Department>[] = [
+  {
+    id: 'name',
+    header: 'Department Name',
+    cell: (department) => <span className="font-black text-secondary-foreground">{department.name}</span>,
+    sortValue: (department) => department.name,
+  },
+  { id: 'code', header: 'Department Code', cell: (department) => department.code, sortValue: (department) => department.code },
+  { id: 'parent', header: 'Parent Department', cell: (department) => department.parent, sortValue: (department) => department.parent },
+  { id: 'head', header: 'Department Head', cell: (department) => department.head, sortValue: (department) => department.head },
+  { id: 'users', header: 'Users', cell: (department) => department.users, sortValue: (department) => department.users },
+  { id: 'status', header: 'Status', cell: (department) => <StatusBadge status={department.status} />, sortValue: (department) => department.status },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: () => (
+      <IconButton variant="ghost" size="sm" aria-label="Open department actions">
+        <MoreVertical className="h-4 w-4" />
+      </IconButton>
+    ),
+  },
+];
+
+const departmentFilters: DataTableFilter<Department>[] = [
+  {
+    id: 'status',
+    label: 'statuses',
+    options: [
+      { label: 'Active', value: 'Active' },
+      { label: 'Draft', value: 'Draft' },
+    ],
+    predicate: (department, value) => department.status === value,
+  },
+];
+
 function SearchBox({ placeholder }: { placeholder: string }) {
   return <SearchInput placeholder={placeholder} />;
 }
@@ -129,66 +154,15 @@ function DepartmentHierarchy() {
 function DepartmentTable() {
   return (
     <SectionCard contentClassName="p-4">
-      <div className="mb-4 grid gap-3 md:grid-cols-[1fr_180px]">
-        <SearchBox placeholder="Search departments" />
-        <Select className="h-9 font-bold text-[#1F2A6D]">
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Department Status - All">Department Status - All</SelectItem>
-            <SelectItem value="Active">Active</SelectItem>
-            <SelectItem value="Draft">Draft</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="overflow-x-auto">
-        <Table className="min-w-[760px]">
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead>Department Name</TableHead>
-              <TableHead>Department Code</TableHead>
-              <TableHead>Parent Department</TableHead>
-              <TableHead>Department Head</TableHead>
-              <TableHead>Users</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {departments.map((department) => (
-              <TableRow
-                key={department.code}
-                className={[
-                  department.selected ? 'bg-[#EAF0FF] hover:bg-[#EAF0FF]' : '',
-                ].join(' ')}
-              >
-                <TableCell className="font-black text-[#1F2A6D]">{department.name}</TableCell>
-                <TableCell>{department.code}</TableCell>
-                <TableCell>{department.parent}</TableCell>
-                <TableCell>{department.head}</TableCell>
-                <TableCell>{department.users}</TableCell>
-                <TableCell>
-                  <StatusBadge status={department.status} />
-                </TableCell>
-                <TableCell>
-                  <IconButton variant="ghost" size="sm">
-                    <MoreVertical className="h-4 w-4" />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="mt-4 flex items-center justify-between text-xs font-semibold text-[#64748B]">
-        <span>Showing 1 to 11 of 11 departments</span>
-        <Pagination>
-          <PaginationButton aria-label="Previous page">‹</PaginationButton>
-          <PaginationButton active>1</PaginationButton>
-          <PaginationButton aria-label="Next page">›</PaginationButton>
-        </Pagination>
-      </div>
+      <EnterpriseDataTable
+        columns={departmentColumns}
+        data={departments}
+        getRowId={(department) => department.code}
+        getSearchText={(department) => Object.values(department).join(' ')}
+        filters={departmentFilters}
+        pageSize={11}
+        emptyTitle="No departments found"
+      />
     </SectionCard>
   );
 }

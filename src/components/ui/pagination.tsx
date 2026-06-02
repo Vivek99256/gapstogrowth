@@ -11,7 +11,7 @@ export function PaginationButton({ className, active, ...props }: ButtonHTMLAttr
       type="button"
       className={cn(
         'h-7 min-w-7 rounded border px-2 text-xs font-black transition',
-        active ? 'border-[#1F2A6D] bg-[#1F2A6D] text-white' : 'border-[#DDE4F2] bg-white text-[#1F2A6D] hover:bg-[#F8FAFE]',
+        active ? 'border-brand bg-brand text-brand-foreground' : 'border-border bg-card text-secondary-foreground hover:bg-muted',
         className,
       )}
       {...props}
