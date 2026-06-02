@@ -1,55 +1,64 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
-type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
+import { cn } from "@/lib/utils";
 
-const variants: Record<ButtonVariant, string> = {
-  primary: 'border-transparent bg-[#FF6A00] text-white shadow-[0_12px_24px_rgba(255,106,0,0.24)] hover:bg-[#F05F00]',
-  secondary: 'border-[#DCE2F8] bg-white text-[#1F2A6D] hover:border-[#FF6A00]/40 hover:bg-[#FFF6EF]',
-  outline: 'border-[#D7DDEB] bg-white text-[#1F2A6D] hover:bg-[#F8FAFE]',
-  ghost: 'border-transparent bg-transparent text-[#1F2A6D] hover:bg-[#EEF2FF]',
-  destructive: 'border-transparent bg-[#DC2626] text-white shadow-[0_12px_24px_rgba(220,38,38,0.18)] hover:bg-[#B91C1C]',
-};
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border focus-visible:border-[#FF6A00] focus-visible:ring-4 focus-visible:ring-[#FF6A00]/15",
+  {
+    variants: {
+      variant: {
+        default: "bg-[#FF6A00] text-white shadow-[0_12px_24px_rgba(255,106,0,0.24)] hover:bg-[#F05F00] border-transparent",
+        destructive:
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        outline:
+          "border border-[#DDE4F2] bg-white text-[#1F2A6D] shadow-sm hover:bg-[#F8FAFE]",
+        secondary:
+          "border border-[#DCE2F8] bg-white text-[#1F2A6D] hover:border-[#FF6A00]/40 hover:bg-[#FFF6EF]",
+        ghost:
+          "border-transparent bg-transparent text-[#1F2A6D] hover:bg-[#EEF2FF]",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md gap-1.5 px-3 text-xs",
+        lg: "h-10 rounded-md px-6 text-sm",
+        icon: "h-9 w-9 rounded-md p-0",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+);
 
-const sizes: Record<ButtonSize, string> = {
-  sm: 'h-8 gap-1.5 rounded-md px-3 text-[11px]',
-  md: 'h-10 gap-2 rounded-md px-5 text-xs',
-  lg: 'h-11 gap-2 rounded-lg px-6 text-sm',
-  icon: 'h-9 w-9 rounded-md p-0',
-};
+interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+}
 
-export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
-};
-
-export function Button({
+function Button({
   className,
-  variant = 'primary',
-  size = 'md',
+  variant,
+  size,
   leftIcon,
   rightIcon,
   children,
-  type = 'button',
   ...props
 }: ButtonProps) {
   return (
     <button
-      type={type}
-      className={cn(
-        'inline-flex shrink-0 items-center justify-center border font-black transition outline-none disabled:pointer-events-none disabled:opacity-60 focus-visible:ring-4 focus-visible:ring-[#FF6A00]/15',
-        variants[variant],
-        sizes[size],
-        className,
-      )}
+      className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     >
-      {leftIcon}
+      {leftIcon && <span className="shrink-0">{leftIcon}</span>}
       {children}
-      {rightIcon}
+      {rightIcon && <span className="shrink-0">{rightIcon}</span>}
     </button>
   );
 }
+
+export { Button, buttonVariants };

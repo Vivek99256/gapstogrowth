@@ -1,8 +1,8 @@
-import type { HTMLAttributes, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
-import { Card, CardContent } from './card';
+import type { HTMLAttributes, ReactNode } from "react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent } from "./card";
 
-export function SectionCard({
+function SectionCard({
   className,
   contentClassName,
   title,
@@ -17,7 +17,7 @@ export function SectionCard({
   action?: ReactNode;
 }) {
   return (
-    <Card className={cn('p-0', className)} {...props}>
+    <Card className={cn("p-0", className)} {...props}>
       {(title || description || action) && (
         <div className="flex items-start justify-between gap-4 px-5 pb-0 pt-5">
           <div className="min-w-0">
@@ -27,7 +27,11 @@ export function SectionCard({
           {action && <div className="shrink-0">{action}</div>}
         </div>
       )}
-      <CardContent className={cn(title || description || action ? 'pt-4' : undefined, contentClassName)}>{children}</CardContent>
+      <CardContent className={cn(title || description || action ? "pt-4" : undefined, contentClassName)}>
+        {children}
+      </CardContent>
     </Card>
   );
 }
+
+export { SectionCard };

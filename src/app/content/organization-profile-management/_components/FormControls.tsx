@@ -1,4 +1,11 @@
-import { Button, Input, Label, RequiredIndicator, Select, Textarea } from '@/components/ui';
+import { Button, Input, Label, RequiredIndicator, Textarea } from '@/components/ui';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { Field, FieldGroup } from './types';
 
 export function RequiredMark() {
@@ -23,11 +30,18 @@ function FormField({ field }: { field: Field }) {
       </span>
       <span className="mt-2 block">
         {field.type === 'select' ? (
-          <Select defaultValue={field.value}>
+        <Select defaultValue={field.value}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
             {(field.options || [field.value]).map((option) => (
-              <option key={option}>{option}</option>
+              <SelectItem key={option} value={option}>
+                {option}
+              </SelectItem>
             ))}
-          </Select>
+          </SelectContent>
+        </Select>
         ) : field.type === 'textarea' ? (
           <Textarea defaultValue={field.value} placeholder={field.placeholder} />
         ) : (
