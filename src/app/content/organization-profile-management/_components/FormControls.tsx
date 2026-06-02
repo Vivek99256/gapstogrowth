@@ -23,7 +23,7 @@ function FormField({ field }: { field: Field }) {
           : '';
 
   return (
-    <Label className={spanClass}>
+    <Label className={`block ${spanClass}`}>
       <span className="flex items-center gap-1 text-xs font-bold text-[#111827]">
         {field.label}
         {field.required && <RequiredMark />}
@@ -31,8 +31,8 @@ function FormField({ field }: { field: Field }) {
       <span className="mt-2 block">
         {field.type === 'select' ? (
         <Select defaultValue={field.value}>
-          <SelectTrigger>
-            <SelectValue />
+          <SelectTrigger className="h-12 rounded-lg px-4 text-xs font-semibold">
+            <SelectValue placeholder={field.placeholder} />
           </SelectTrigger>
           <SelectContent>
             {(field.options || [field.value]).map((option) => (

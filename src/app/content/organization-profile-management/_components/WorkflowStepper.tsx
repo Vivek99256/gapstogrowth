@@ -16,9 +16,9 @@ export default function WorkflowStepper({ activeStep, onStepChange }: WorkflowSt
             <TabsTrigger
               key={step.id}
               value={step.id}
-              className="relative flex !h-12 items-center justify-center gap-2 !rounded-none border-b-2 bg-transparent !px-3 text-center shadow-none transition focus:outline-none focus:ring-4 focus:ring-[#FF6A00]/10"
+              className="relative flex !h-12 items-center justify-center gap-2 !rounded-none border-b-2 border-transparent bg-transparent !px-3 text-center shadow-none transition data-[state=active]:border-[#FF6A00] data-[state=active]:bg-[#FFF7F0] data-[state=active]:shadow-none focus:outline-none focus:ring-4 focus:ring-[#FF6A00]/10"
             >
-              <span className="min-w-0 truncate text-lg font-bold">{step.title}</span>
+              <span className="min-w-0 truncate text-xs font-bold sm:text-sm">{step.title}</span>
             </TabsTrigger>
           ))}
         </TabsList>

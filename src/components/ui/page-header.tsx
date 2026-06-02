@@ -8,9 +8,9 @@ function PageHeader({
   actions,
 }: {
   breadcrumbs?: string[];
-  title: ReactNode;
-  description?: ReactNode;
-  actions?: ReactNode;
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  actions?: React.ReactNode;
 }) {
   return (
     <div className="mb-6">
