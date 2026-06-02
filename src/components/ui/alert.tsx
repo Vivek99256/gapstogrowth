@@ -1,33 +1,63 @@
-import type { HTMLAttributes, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-type AlertVariant = 'info' | 'success' | 'warning' | 'danger';
+import { cn } from "@/lib/utils";
 
-const variants: Record<AlertVariant, string> = {
-  info: 'border-[#DCE2F8] bg-[#F0F3FF] text-[#1F2A6D]',
-  success: 'border-[#CFEBDD] bg-[#EAF7EF] text-[#166534]',
-  warning: 'border-[#FFD8B5] bg-[#FFF3EA] text-[#9A4A00]',
-  danger: 'border-[#FECACA] bg-[#FEF2F2] text-[#991B1B]',
-};
+const alertVariants = cva(
+  "relative w-full rounded-lg border px-4 py-3 text-xs font-semibold [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground",
+  {
+    variants: {
+      variant: {
+        default: "border-[#DDE4F2] bg-[#F0F3FF] text-[#1F2A6D]",
+        destructive:
+          "border-[#FECACA] bg-[#FEF2F2] text-[#991B1B]",
+        success: "border-[#CFEBDD] bg-[#EAF7EF] text-[#166534]",
+        warning: "border-[#FFD8B5] bg-[#FFF3EA] text-[#9A4A00]",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+);
 
-export function Alert({
+function Alert({
   className,
-  variant = 'info',
-  icon,
+  variant,
   ...props
-}: HTMLAttributes<HTMLDivElement> & { variant?: AlertVariant; icon?: ReactNode }) {
+}: React.ComponentProps<"div"> &
+  VariantProps<typeof alertVariants>) {
   return (
-    <div className={cn('flex gap-3 rounded-lg border p-4 text-xs font-semibold leading-5', variants[variant], className)} role="alert" {...props}>
-      {icon && <span className="mt-0.5 shrink-0">{icon}</span>}
-      <div className="min-w-0 flex-1">{props.children}</div>
-    </div>
+    <div
+      data-slot="alert"
+      role="alert"
+      className={cn(alertVariants({ variant }), className)}
+      {...props}
+    />
   );
 }
 
-export function AlertTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
-  return <h4 className={cn('mb-1 text-sm font-black', className)} {...props} />;
+function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="alert-title"
+      className={cn("mb-1 font-black leading-none [&_svg]:size-4", className)}
+      {...props}
+    />
+  );
 }
 
-export function AlertDescription({ className, ...props }: HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={cn('text-xs font-medium leading-5', className)} {...props} />;
+function AlertDescription({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="alert-description"
+      className={cn("text-xs font-medium", className)}
+      {...props}
+    />
+  );
 }
+
+export { Alert, AlertTitle, AlertDescription };

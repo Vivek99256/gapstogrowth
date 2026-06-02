@@ -1,17 +1,41 @@
-import type { HTMLAttributes } from 'react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-type BadgeVariant = 'default' | 'success' | 'warning' | 'danger' | 'navy' | 'outline';
+import { cn } from "@/lib/utils";
 
-const variants: Record<BadgeVariant, string> = {
-  default: 'bg-[#EEF2FF] text-[#2E3A8C]',
-  success: 'bg-[#EAF7EF] text-[#168044]',
-  warning: 'bg-[#FFF3EA] text-[#C45B00]',
-  danger: 'bg-[#FEE2E2] text-[#B91C1C]',
-  navy: 'bg-[#1F2A6D] text-white',
-  outline: 'border border-[#DDE4F2] bg-white text-[#64748B]',
-};
+const badgeVariants = cva(
+  "inline-flex items-center justify-center rounded-md border px-2 py-1 text-[11px] font-black whitespace-nowrap shrink-0 [&_svg]:not-[class*='size-']]:size-3 [&_svg]:pointer-events-none gap-1 [&_svg]:shrink-0 transition-all duration-200",
+  {
+    variants: {
+      variant: {
+        default: "border-transparent bg-[#EEF2FF] text-[#2E3A8C]",
+        secondary: "border-transparent bg-[#F8FAFE] text-[#64748B]",
+        destructive: "border-transparent bg-[#FEE2E2] text-[#B91C1C]",
+        outline: "border border-[#DDE4F2] bg-white text-[#64748B]",
+        success: "border-transparent bg-[#EAF7EF] text-[#168044]",
+        warning: "border-transparent bg-[#FFF3EA] text-[#C45B00]",
+        navy: "border-transparent bg-[#1F2A6D] text-white",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+);
 
-export function Badge({ className, variant = 'default', ...props }: HTMLAttributes<HTMLSpanElement> & { variant?: BadgeVariant }) {
-  return <span className={cn('inline-flex items-center rounded px-2 py-1 text-[11px] font-black', variants[variant], className)} {...props} />;
+interface BadgeProps
+  extends React.HTMLAttributes<HTMLSpanElement>,
+    VariantProps<typeof badgeVariants> {}
+
+function Badge({ className, variant, ...props }: BadgeProps) {
+  return (
+    <span
+      data-slot="badge"
+      className={cn(badgeVariants({ variant }), className)}
+      role="status"
+      {...props}
+    />
+  );
 }
+
+export { Badge, badgeVariants };

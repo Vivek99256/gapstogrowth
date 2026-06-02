@@ -1,28 +1,70 @@
-import type { ButtonHTMLAttributes, HTMLAttributes } from 'react';
-import { cn } from '@/lib/utils';
+"use client";
 
-export function Tabs({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('w-full', className)} {...props} />;
-}
+import * as React from "react";
+import * as TabsPrimitive from "@radix-ui/react-tabs";
 
-export function TabsList({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('inline-flex rounded-lg border border-[#DDE4F2] bg-[#F8FAFE] p-1', className)} {...props} />;
-}
+import { cn } from "@/lib/utils";
 
-export function TabsTrigger({ className, 'aria-selected': selected, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { 'aria-selected'?: boolean }) {
+function Tabs({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Root>) {
   return (
-    <button
-      type="button"
-      aria-selected={selected}
+    <TabsPrimitive.Root
+      data-slot="tabs"
+      className={cn("flex flex-col gap-2", className)}
+      {...props}
+    />
+  );
+}
+
+function TabsList({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.List>) {
+  return (
+    <TabsPrimitive.List
+      data-slot="tabs-list"
       className={cn(
-        'h-8 rounded-md px-3 text-xs font-black text-[#64748B] transition hover:text-[#1F2A6D] aria-selected:bg-white aria-selected:text-[#1F2A6D] aria-selected:shadow-sm',
-        className,
+        "inline-flex min-h-10 items-center justify-center rounded-lg bg-[#F8FAFE] p-1 text-[#64748B]",
+        className
       )}
       {...props}
     />
   );
 }
 
-export function TabsContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('mt-4 outline-none', className)} {...props} />;
+function TabsTrigger({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+  return (
+    <TabsPrimitive.Trigger
+      data-slot="tabs-trigger"
+      className={cn(
+        "inline-flex min-h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md px-3 py-2 text-xs font-bold text-[#64748B] outline-none transition-all",
+        "focus-visible:ring-4 focus-visible:ring-[#FF6A00]/10",
+        "data-[state=active]:bg-white data-[state=active]:text-[#1F2A6D] data-[state=active]:shadow-sm",
+        "disabled:pointer-events-none disabled:opacity-50",
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}
+    />
+  );
 }
+
+function TabsContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+  return (
+    <TabsPrimitive.Content
+      data-slot="tabs-content"
+      className={cn("mt-2 outline-none", className)}
+      {...props}
+    />
+  );
+}
+
+export { Tabs, TabsList, TabsTrigger, TabsContent };

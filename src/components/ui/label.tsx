@@ -1,10 +1,22 @@
-import type { LabelHTMLAttributes } from 'react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
 
-export function Label({ className, ...props }: LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn('text-xs font-bold text-[#111827]', className)} {...props} />;
+import { cn } from "@/lib/utils";
+
+function Label({ className, ...props }: React.ComponentProps<"label">) {
+  return (
+    <label
+      data-slot="label"
+      className={cn(
+        "flex items-center gap-2 text-xs font-bold text-[#111827] select-none",
+        className
+      )}
+      {...props}
+    />
+  );
 }
 
-export function RequiredIndicator() {
+function RequiredIndicator() {
   return <span className="text-[#FF6A00]" aria-hidden="true">*</span>;
 }
+
+export { Label, RequiredIndicator };

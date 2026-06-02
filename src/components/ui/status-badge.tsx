@@ -1,14 +1,14 @@
 import { Badge } from './badge';
 
-const statusVariants: Record<string, 'success' | 'warning' | 'danger' | 'default' | 'outline'> = {
+const statusVariants: Record<string, 'success' | 'warning' | 'destructive' | 'default' | 'outline'> = {
   active: 'success',
   completed: 'success',
   success: 'success',
   pending: 'warning',
   draft: 'warning',
-  inactive: 'danger',
-  failed: 'danger',
-  high: 'danger',
+  inactive: 'destructive',
+  failed: 'destructive',
+  high: 'destructive',
   medium: 'warning',
   low: 'success',
 };

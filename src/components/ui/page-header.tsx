@@ -1,16 +1,16 @@
-import type { ReactNode } from 'react';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from './breadcrumb';
+import * as React from "react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from "./breadcrumb";
 
-export function PageHeader({
+function PageHeader({
   breadcrumbs,
   title,
   description,
   actions,
 }: {
   breadcrumbs?: string[];
-  title: ReactNode;
-  description?: ReactNode;
-  actions?: ReactNode;
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  actions?: React.ReactNode;
 }) {
   return (
     <div className="mb-6">
@@ -18,10 +18,12 @@ export function PageHeader({
         <Breadcrumb>
           <BreadcrumbList>
             {breadcrumbs.map((item, index) => (
-              <BreadcrumbItem key={`${item}-${index}`}>
-                <span className={index === breadcrumbs.length - 1 ? 'text-[#1F2A6D]' : undefined}>{item}</span>
+              <React.Fragment key={`${item}-${index}`}>
+                <BreadcrumbItem>
+                  <span className={index === breadcrumbs.length - 1 ? "text-[#1F2A6D]" : undefined}>{item}</span>
+                </BreadcrumbItem>
                 {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-              </BreadcrumbItem>
+              </React.Fragment>
             ))}
           </BreadcrumbList>
         </Breadcrumb>
@@ -36,3 +38,5 @@ export function PageHeader({
     </div>
   );
 }
+
+export { PageHeader };

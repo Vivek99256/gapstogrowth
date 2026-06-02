@@ -19,6 +19,10 @@ import {
   SearchInput,
   SectionCard,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   StatusBadge,
   Table,
   TableBody,
@@ -128,9 +132,14 @@ function DepartmentTable() {
       <div className="mb-4 grid gap-3 md:grid-cols-[1fr_180px]">
         <SearchBox placeholder="Search departments" />
         <Select className="h-9 font-bold text-[#1F2A6D]">
-          <option>Department Status - All</option>
-          <option>Active</option>
-          <option>Draft</option>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Department Status - All">Department Status - All</SelectItem>
+            <SelectItem value="Active">Active</SelectItem>
+            <SelectItem value="Draft">Draft</SelectItem>
+          </SelectContent>
         </Select>
       </div>
       <div className="overflow-x-auto">
